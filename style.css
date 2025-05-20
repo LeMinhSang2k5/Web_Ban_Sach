@@ -1,0 +1,35 @@
+ body{
+    margin: 0! important;
+    padding: 0! important;
+ }
+.banner{
+    height: 200px;
+    background: url("./picture/banner.png") center no-repeat;
+    padding: 20px;
+}
+.banner .report-cart-account {
+    height: 80px;
+    width: 100%;
+    text-align: right;
+}
+.banner .report-cart-account .account{
+margin:5px 10px;
+padding: 11px 21px;
+text-decoration: none;
+display: inline-block;
+border: 1px solid red;
+}
+.banner .report-cart-account .report{
+    margin: 5px 10px;
+padding: 11px 21px;
+text-decoration: none;
+display: inline-block;
+border: 1px solid red;
+}
+.banner .report-cart-account .cart{
+    margin: 5px 10px;
+padding: 11px 21px;
+text-decoration: none;
+display: inline-block;
+border: 1px solid red;
+}
