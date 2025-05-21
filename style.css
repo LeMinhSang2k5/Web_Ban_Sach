@@ -4,12 +4,11 @@
  }
 .banner{
     height: 200px;
-    background: url("./picture/banner.png") center no-repeat;
     padding: 20px;
 }
 .banner .report-cart-account {
     height: 80px;
-    width: 100%;
+    width: 100%;    
     text-align: right;
 }
 .banner .report-cart-account .account{
@@ -32,4 +31,24 @@ padding: 11px 21px;
 text-decoration: none;
 display: inline-block;
 border: 1px solid red;
+}
+.safe{
+    height: auto;
+    background: url("./picture/banner.png") center no-repeat;
+    padding:20px;
+}
+.banner .report-cart-account .sreach{
+    margin:0px 10px;
+    display: inline-block;  
+    text-align: center;
+    
+}
+.banner  .report-cart-account .left, .banner .report-cart-account .center, .banner .report-cart-account .right {
+  width: 60px;
+  display: inline-block;
+    
+}
+.banner .report-cart-account span {
+  display: block;
+  font-size: 15px;
 }
