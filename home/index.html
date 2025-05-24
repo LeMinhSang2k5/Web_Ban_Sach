@@ -18,20 +18,20 @@
                 <img src="img/logo_uth.png" id="logo">
             </a>
 
-             <!-- Dropdown loại sách -->
+            <!-- Dropdown loại sách -->
             <div class="dropdown">
-              <button class="dropdown-toggle">
-                <img src="img/ico_menu.svg">
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href="#">Văn học</a></li>
-                <li><a href="#">Khoa học</a></li>
-                <li><a href="#">Thiếu nhi</a></li>
-                <li><a href="#">Lịch sử</a></li>
-                <li><a href="#">Kinh tế</a></li>
-              </ul>
-            </div>  
-            <div >
+                <button class="dropdown-toggle">
+                    <img src="img/ico_menu.svg">
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Văn học</a></li>
+                    <li><a href="#">Khoa học</a></li>
+                    <li><a href="#">Thiếu nhi</a></li>
+                    <li><a href="#">Lịch sử</a></li>
+                    <li><a href="#">Kinh tế</a></li>
+                </ul>
+            </div>
+            <div>
                 <form class="search-bar" id="searchForm">
                     <input type="search" placeholder="Tìm kiếm sách..." aria-label="Tìm kiếm sách" maxlength="128">
                     <button type="submit"><i class="fas fa-search"></i></button>
@@ -40,7 +40,7 @@
             <nav>
                 <ul>
                     <li><a href="#sach-moi" class="nav-link"><i class="fa-solid fa-bell"></i>Thông báo</a></li>
-                    <li><a href="#best-seller" class="nav-link" ><i class="fas fa-shopping-cart"></i>Giỏ hàng</a></li>
+                    <li><a href="#best-seller" class="nav-link"><i class="fas fa-shopping-cart"></i>Giỏ hàng</a></li>
                     <li><a href="#van-hoc" class="nav-link"><i class="fas fa-user"></i>Tài Khoản</a></li>
                 </ul>
             </nav>
@@ -50,15 +50,25 @@
     <!-- MAIN CONTENT -->
     <main>
         <!-- Trang Chủ (Hiển thị mặc định) -->
-        <section id="home-page" class="page active-page">
+        <section id="home-page" class="page-active-page">
             <div class="container">
-                <h2>Sách Nổi Bật</h2>
+                <div class="carousel">
+                    <div class="slides">
+                        <div class="slide" style="background-image: url(./img/Screenshot\ 2025-05-25\ 013824.png);">
+                        </div>
+                        <div class="slide" style="background-image: url(./img/ico_menu.svg);"></div>
+                        <div class="slide" style="background-image: url(./img/ico_cart_gray.svg);"></div>
+                    </div>
+                    <button class="nav prev">&#10094;</button>
+                    <button class="nav next">&#10095;</button>
+                </div>
                 <div class="product-grid" id="featured-products">
                     <!-- Sản phẩm sẽ được chèn bởi JavaScript -->
-                </div>
+                    <div class="sp1">
 
-                <h2>Sách Mới Nhất</h2>
-                <div class="product-grid" id="newest-products">
+                    </div>
+                </div>
+                <div class="" id="newest-products">
                     <!-- Sản phẩm sẽ được chèn bởi JavaScript -->
                 </div>
             </div>
@@ -106,7 +116,7 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

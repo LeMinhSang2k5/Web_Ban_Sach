@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             isFeatured: true,
             isNew: false
         },
-            {
+        {
             id: 7,
             title: "Người Vợ Paris",
             author: "Paula McLain",
