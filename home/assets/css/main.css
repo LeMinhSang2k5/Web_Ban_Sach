@@ -6,6 +6,7 @@
     --dark-color: #343a40;
     --success-color: #28a745;
     --danger-color: #ff6c6b;
+    --background-color: #f4f0f0;
     --font-family: 'Arial', sans-serif;
     --header-height: 70px;
 }
@@ -229,13 +230,39 @@ header .search-bar button i {
 .nav-link span {
     margin-top: 2px; }
 
+    
 
-
-
-main {
+.main-contain {
+    padding: 20px;
     background-color: var(--background-color);
     margin-top: 100px;
 }
+
+.content-product{
+    border: 1px solid red;
+    padding: 20px;
+    margin: 40px 200px 40px 200px;
+    border-radius: 10px;
+    background-color: var(--light-color);
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.product-card {
+    background: red;
+    border: 1px solid red;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
 
 /* --- Footer --- */
 footer {
