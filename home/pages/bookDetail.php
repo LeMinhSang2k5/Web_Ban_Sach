@@ -2,21 +2,21 @@
   <!-- Cột trái: Ảnh sách và các ảnh nhỏ -->
   <div class="book-detail-left">
     <div class="main-image">
-      <img src="assets/img/haha.png" alt="Đắc Nhân Tâm">
+      <img id="main-img" src="assets/img/dacnhantam.webp" alt="" onclick="showImageOverlay(this.src)">
     </div>
     <div class="thumbnail-list">
-      <img src="assets/img/haha.png" alt="">
-      <img src="assets/img/haha.png" alt="">
-      <img src="assets/img/haha.png" alt="">
-      <img src="assets/img/haha.png" alt="">
+      <img src="assets/img/dacnhantam.webp" alt="" onclick="showImageOverlay(this.src)">
+      <img src="assets/img/dacnhantam.webp" alt="" onclick="showImageOverlay(this.src)">
+      <img src="assets/img/dacnhantam.webp" alt="" onclick="showImageOverlay(this.src)">
+      <img src="assets/img/dacnhantam.webp" alt="" onclick="showImageOverlay(this.src)">
       <div class="more-thumbnails">+5</div>
     </div>
     <button class="add-to-cart">Thêm vào giỏ hàng</button>
     <button class="buy-now">Mua ngay</button>
     <div class="policy-list">
-      <div>Thời gian giao hàng: Giao nhanh và uy tín</div>
-      <div>Chính sách đổi trả: Đổi trả miễn phí toàn quốc</div>
-      <div>Chính sách khách sỉ: Ưu đãi khi mua số lượng lớn</div>
+      <p>Thời gian giao hàng: Giao nhanh và uy tín</p>
+      <p>Chính sách đổi trả: Đổi trả miễn phí toàn quốc</p>
+      <p>Chính sách khách sỉ: Ưu đãi khi mua số lượng lớn</p>
     </div>
   </div>
   <!-- Cột phải: Thông tin sách -->
@@ -103,5 +103,21 @@ function changeQuantity(delta) {
   value += delta;
   if (value < 1) value = 1;
   input.value = value;
+}
+
+function changeMainImage(src) {
+  document.getElementById('main-img').src = src;
+}
+
+function showImageOverlay(src) {
+  // Tạo overlay
+  var overlay = document.createElement('div');
+  overlay.className = 'img-overlay';
+  overlay.onclick = function() { document.body.removeChild(overlay); };
+  // Tạo ảnh lớn
+  var img = document.createElement('img');
+  img.src = src;
+  overlay.appendChild(img);
+  document.body.appendChild(overlay);
 }
 </script>
