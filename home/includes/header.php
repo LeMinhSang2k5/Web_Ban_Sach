@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiệm sách của giấc mơ</title>
     <link rel="icon" href="img/ico_logo.png" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -40,8 +42,69 @@
                 <ul>
                     <li><a href="#sach-moi" class="nav-link"><i class="fa-solid fa-bell"></i>Thông báo</a></li>
                     <li><a href="#best-seller" class="nav-link"><i class="fas fa-shopping-cart"></i>Giỏ hàng</a></li>
-                    <li><a href="#van-hoc" class="nav-link"><i class="fas fa-user"></i>Tài Khoản</a></li>
+                    <li class="btnLogin-popup"><a href="#van-hoc" class="nav-link "><i class="fas fa-user btnLogin-popup"></i>Tài Khoản</a></li>
                 </ul>
             </nav>
         </div>
     </header>
+    <div class="main-contain">
+        <div class="wrapper">
+            <span class="icon-close"><i class="fa-solid fa-xmark"></i></span>
+            <div class="form-box login">
+                <h2>Login</h2>
+                <from action="#">
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="remember-forgot">
+                        <label><input type="checkbox">
+                            remember me</label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btnn">Login</button>
+                    <div class="login-register">
+                        <p> Don't have a account?<a href="#" class="register-link">Register</a></p>
+                    </div>
+                </from>
+            </div>
+            <div class="form-box register">
+                <h2>Registration</h2>
+                <from action="#">
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-user"></i></span>
+                        <input type="text" required>
+                        <label>Username</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="remember-forgot">
+                        <label><input type="checkbox">
+                            I agree to the terms & conditions</label>
+
+                    </div>
+                    <button type="submit" class="btnn">Register</button>
+                    <div class="login-register">
+                        <p> Already have a account?<a href="#" class="login-link">Login</a></p>
+                    </div>
+                </from>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

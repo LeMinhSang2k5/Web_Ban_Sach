@@ -1,10 +1,3 @@
-<?php
-    include 'db.php';
-
-    $sql = "SELECT * FROM books";
-    $result = $conn->query($sql);
-?>
-
 <?php include 'includes/header.php'; ?>
 
 <main>
@@ -12,3 +5,4 @@
 </main>
 
 <?php include 'includes/footer.php'; ?>
+<script src="../script.js"></script>
