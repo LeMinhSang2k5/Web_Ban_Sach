@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiệm sách của giấc mơ</title>
     <link rel="icon" href="img/ico_logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/home/assets/css/main.css">
+    <link rel="stylesheet" href="/home/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -16,7 +16,7 @@
     <header>
         <div class="container">
             <a href="index.php" class="logo-link">
-                <img src="assets/img/logo_uth.png" id="logo">
+                <img src="/home/assets/img/logo_uth.png" id="logo">
             </a>
 
             <!-- Dropdown loại sách -->
@@ -50,17 +50,18 @@
     <div class="main-contain">
         <div class="wrapper">
             <span class="icon-close"><i class="fa-solid fa-xmark"></i></span>
-            <div class="form-box login">
+            <div class="form-box <?= isActiveForm('login', $activeForm); ?> login ">
                 <h2>Login</h2>
-                <from action="#">
+                <?= showError($error['login']); ?>
+                <form action="config.php" method="POST">
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" required>
+                        <input type="email" name="email" required>
                         <label>Email</label>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" required>
+                        <input type="password" name="password" required>
                         <label>Password</label>
                     </div>
                     <div class="remember-forgot">
@@ -68,28 +69,29 @@
                             remember me</label>
                         <a href="#">Forgot Password?</a>
                     </div>
-                    <button type="submit" class="btnn">Login</button>
+                    <button type="submit" class="btnn" name="login">Login</button>
                     <div class="login-register">
                         <p> Don't have a account?<a href="#" class="register-link">Register</a></p>
                     </div>
-                </from>
+                </form>
             </div>
-            <div class="form-box register">
+            <div class="form-box register <?= isActiveForm('register', $activeForm); ?>">
                 <h2>Registration</h2>
-                <from action="#">
+                <?= showError($error['register']); ?>
+                <form action="config.php" method="POST">
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" required>
+                        <input type="text" name="username" required>
                         <label>Username</label>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" required>
+                        <input type="email" name="email" required>
                         <label>Email</label>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" required>
+                        <input type="password" name="password" required>
                         <label>Password</label>
                     </div>
                     <div class="remember-forgot">
@@ -97,11 +99,11 @@
                             I agree to the terms & conditions</label>
 
                     </div>
-                    <button type="submit" class="btnn">Register</button>
+                    <button type="submit" class="btnn" name="register">Register</button>
                     <div class="login-register">
                         <p> Already have a account?<a href="#" class="login-link">Login</a></p>
                     </div>
-                </from>
+                </form>
             </div>
         </div>
     </div>
