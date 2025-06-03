@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiệm sách của giấc mơ</title>
     <link rel="icon" href="img/ico_logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="/home/assets/css/main.css">
-    <link rel="stylesheet" href="/home/assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -16,7 +16,7 @@
     <header>
         <div class="container">
             <a href="index.php" class="logo-link">
-                <img src="/home/assets/img/logo_uth.png" id="logo">
+                <img src="assets/img/logo_uth.png" id="logo">
             </a>
 
             <!-- Dropdown loại sách -->
@@ -106,6 +106,7 @@
                 </form>
             </div>
         </div>
+    </div>
     </div>
 </body>
 
