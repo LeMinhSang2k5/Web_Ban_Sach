@@ -18,6 +18,13 @@
   padding: 0;
 }
 
+img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 0;
+}
+
 body {
   font-family: var(--font-family);
   line-height: 1.6;
@@ -25,6 +32,10 @@ body {
   background-color: var(--background-color);
   padding-top: 50px;
 
+}
+#banner{
+  height: 600px;
+  object-fit: cover;
 }
 
 a {
@@ -35,12 +46,6 @@ a {
 
 li {
   list-style: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
 }
 
 .btn {
@@ -64,7 +69,7 @@ header {
   width: 100%;
   z-index: 1000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  height: var(--header-height);
+  height: auto;
 
   justify-content: center;
   display: flex;
@@ -135,7 +140,7 @@ header nav ul li a {
   width: 50px;
 }
 
-/* Menu xá»• xuá»‘ng */
+/* Menu xá»• xuá»•ng */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -162,7 +167,7 @@ header nav ul li a {
   background-color: #f2f2f2;
 }
 
-/* Hover Ä‘á»ƒ show dropdown */
+/* Hover Ä•á»ƒ show dropdown */
 .dropdown:hover .dropdown-menu {
   display: block;
 }
@@ -202,7 +207,7 @@ header .search-bar button i {
   display: flex;
   justify-content: center;
   gap: 40px;
-  /* khoáº£ng cÃ¡ch giá»¯a cÃ¡c má»¥c */
+  /* khoáº£ng cÃ¡ch giá»• trÃªn tablet */
   padding: 0;
   margin: 0;
 }
@@ -214,7 +219,7 @@ header .search-bar button i {
 .nav-link {
   display: flex;
   flex-direction: column;
-  /* icon trÃªn, chá»¯ dÆ°á»›i */
+  /* icon trÃªn, chá»• dÆ°á»•ng */
   align-items: center;
   text-decoration: none;
   color: #333;
@@ -225,7 +230,7 @@ header .search-bar button i {
   font-size: 20px;
   margin-bottom: 4px;
   color: var(--warm-color);
-  /* icon mÃ u Ä‘á» ná»•i báº­t */
+  /* icon mÃ u Ä•á»• ná»•i báº•t */
 }
 
 .nav-link span {
@@ -234,14 +239,14 @@ header .search-bar button i {
   
 
 .main-contain {
-  padding: 20px;
   background-color: var(--background-color);
-  margin-top: 100px;
 }
+
+/* -- Product -- */
 
 .content-product{
   border: 1px solid red;
-  padding: 20px;
+  padding: 10px;
   margin: 40px 200px 40px 200px;
   border-radius: 10px;
   background-color: var(--light-color);
@@ -255,14 +260,165 @@ header .search-bar button i {
 }
 
 .product-card {
-  background: red;
-  border: 1px solid red;
-  border-radius: 5px;
-  padding: 15px;
+  width: 220px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 10px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.product-card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 4px 16px #0002;
+}
+.product-image-wrap {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+  background: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
+.product-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #ff9800;
+  color: #fff;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  padding: 2px 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.product-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 8px 0 4px 0;
+  min-height: 40px;
+}
+.product-price {
+  color: #d70018;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.product-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.product-discount {
+  background: #d70018;
+  color: #fff;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-left: 8px;
+}
+
+.product-old-price {
+  color: #888;
+  font-size: 1rem;
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+.product-sold {
+  color: #888;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+.see-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 16px 0;
+}
+.see-more-btn {
+  border: 2px solid #d70018;
+  background: #fff;
+  color: #d70018;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 32px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.see-more-btn:hover {
+  background: #d70018;
+  color: #fff;
+}
+
+.buy-btn {
+  background: #ff6c6b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background 0.2s;
+}
+.buy-btn:hover {
+  background: #d70018;
+}
+
+/* -- Reference -- */
+
+.reference-product {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #0001;
+}
+
+.reference-tabs {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 32px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 16px;
+}
+
+.reference-tabs .tab {
+  font-size: 1.2rem;
+  color: #333;
+  padding: 12px 0;
+  cursor: pointer;
+  position: relative;
+  font-weight: 500;
+}
+
+.reference-tabs .tab.active {
+  color: #d70018;
+  border-bottom: 3px solid #d70018;
+  font-weight: bold;
+}
+
+.reference-list { display: none; }
+.reference-list.active { display: grid; }
 
 
 /* --- Footer --- */
@@ -272,7 +428,6 @@ footer {
   padding: 40px 0 20px;
   margin-top: 40px;
   margin-bottom: 0px;
-  /* Äá»ƒ cÃ³ khoáº£ng cÃ¡ch vá»›i content */
 }
 
 .footer-columns {
@@ -287,7 +442,6 @@ footer {
   font-size: 1.2rem;
   margin-bottom: 15px;
   color: #fff;
-  /* TiÃªu Ä‘á» footer ná»•i báº­t hÆ¡n */
 }
 
 .footer-column ul li {
@@ -296,7 +450,6 @@ footer {
 
 .footer-column ul li a {
   color: #ccc;
-  /* MÃ u link nháº¡t hÆ¡n */
   transition: color 0.3s ease;
 }
 
@@ -345,14 +498,12 @@ footer {
 
   #product-detail-content {
       grid-template-columns: 1fr;
-      /* Chuyá»ƒn sang 1 cá»™t trÃªn tablet */
+      /* Chuyá»•n sang 1 cá»• trÃªn tablet */
   }
 
   #product-detail-image {
       max-width: 100%;
-      /* áº¢nh chiáº¿m toÃ n bá»™ chiá»u rá»™ng cá»™t */
       margin: 0 auto 20px;
-      /* CÄƒn giá»¯a vÃ  táº¡o khoáº£ng cÃ¡ch */
   }
 }
 .carousel {
