@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiệm sách của giấc mơ</title>
-    <link rel="icon" href="img/ico_logo.png" type="image/x-icon">
+    <link rel="icon" href="assets/img/icon/ico_logo.png" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,13 +16,13 @@
     <header>
         <div class="container">
             <a href="index.php" class="logo-link">
-                <img src="assets/img/logo_uth.png" id="logo">
+                <img src="assets/img/logo/logo_uth.png" id="logo">
             </a>
 
             <!-- Dropdown loại sách -->
             <div class="dropdown">
                 <button class="dropdown-toggle">
-                    <img src="assets/img/ico_menu.svg">
+                    <img src="assets/img/icon/ico_menu.svg">
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="#">Văn học</a></li>
