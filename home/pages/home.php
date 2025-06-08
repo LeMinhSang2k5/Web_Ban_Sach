@@ -1,3 +1,23 @@
+<?php
+// Lấy dữ liệu sách từ database
+
+// Truy vấn cho sách bán chạy
+$sql_bestseller = "SELECT * FROM books WHERE label = 'Bán chạy'";
+$result_bestseller = mysqli_query($conn, $sql_bestseller);
+
+if (!$result_bestseller) {
+    die("Lỗi truy vấn sách bán chạy: " . mysqli_error($conn));
+}
+
+// Truy vấn cho sách tham khảo
+$sql_reference = "SELECT * FROM books WHERE category = 'Sach tham khao'";
+$result_reference = mysqli_query($conn, $sql_reference);
+
+if (!$result_reference) {
+    die("Lỗi truy vấn sách tham khảo: " . mysqli_error($conn));
+}
+?>
+
 <body>
     <div class="main-contain">
 
@@ -8,65 +28,30 @@
             <h1>Những cuốn sách nổi bật</h1>
             <div class="product-grid">
                 <?php
-                // Mảng giả lập dữ liệu sách
-                $books = [
-                    [
-                        'title' => 'Đắc Nhân Tâm',
-                        'label' => 'Bán chạy',
-                        'price' => 85000,
-                        'image' => './assets/img/sach-help-self/dacnhantam.webp',
-                        'sold' => 448,
-                        'old_price' => 100000,
-                        'discount' => '-15%',
-                    ],
-                    [
-                        'title' => 'Búp sen xanh',
-                        'label' => 'Bán chạy',
-                        'price' => 99000,
-                        'image' => './assets/img/sach-van-hoc/bupsenxanh.png',
-                        'sold' => 448,
-                        'old_price' => 100000,
-                        'discount' => '-15%',
-                    ],
-                    [
-                        'title' => 'Nhà Giả Kim',
-                        'label' => 'Bán chạy',
-                        'price' => 110000,
-                        'image' => './assets/img/sach-van-hoc/nhagiakim.png',
-                        'sold' => 448,
-                        'old_price' => 100000,
-                        'discount' => '-15%',
-                    ],
-                    [
-                        'title' => 'Bông sen vàng',
-                        'price' => 110000,
-                        'image' => './assets/img/sach-van-hoc/bongsenvang.png',
-                        'sold' => 448,
-                        'old_price' => 100000,
-                        'discount' => '-15%',
-                    ]
-                ];
-
-                foreach ($books as $book) {
-                    echo '<div class="product-card">';
-                    echo '  <div class="product-image-wrap">';
-                    if (isset($book['label']) && $book['label']) {
-                        echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                if (mysqli_num_rows($result_bestseller) > 0) {
+                    while ($book = mysqli_fetch_assoc($result_bestseller)) {
+                        echo '<div class="product-card">';
+                        echo '  <div class="product-image-wrap">';
+                        if (!empty($book['label'])) {
+                            echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                        }
+                        echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
+                        echo '  </div>';
+                        echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
+                        echo '  <div class="product-price-row">';
+                        echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
+                        if (!empty($book['discount'])) {
+                            echo '    <span class="product-discount">' . $book['discount'] . '</span>';
+                        }
+                        echo '  </div>';
+                        if (!empty($book['old_price'])) {
+                            echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
+                        }
+                        echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
+                        echo '</div>';
                     }
-                    echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
-                    echo '  </div>';
-                    echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
-                    echo '  <div class="product-price-row">';
-                    echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
-                    if ($book['discount']) {
-                        echo '    <span class="product-discount">' . $book['discount'] . '</span>';
-                    }
-                    echo '  </div>';
-                    if ($book['old_price']) {
-                        echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
-                    }
-                    echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
-                    echo '</div>';
+                } else {
+                    echo '<p>Không có sách bán chạy nào trong database.</p>';
                 }
                 ?>
             </div>
@@ -80,31 +65,12 @@
                 </div>
                 <div class="reference-content">
                     <div class="reference-list reference-list-thamkhao product-grid active">
-                        <?php
-                        $books_thamkhao = [
-                            [
-                                'title' => 'Đột Phá Tư Duy Kì Thi Tốt Nghiệp THPT - Môn Sinh Học',
-                                'price' => 120000,
-                                'old_price' => 150000,
-                                'discount' => '-20%',
-                                'sold' => 45,
-                                'label' => '',
-                                'image' => './assets/img/sach-kham-khao/sinhhoc.png'
-                            ],
-                            [
-                                'title' => 'Đề Minh Họa Tốt Nghiệp THPT 2025',
-                                'price' => 80000,
-                                'old_price' => 10000,
-                                'discount' => '-20%',
-                                'sold' => 602,
-                                'label' => '',
-                                'image' => './assets/img/sach-kham-khao/nguvan.png'
-                            ]
-                        ];
-                        foreach ($books_thamkhao as $book) {
+                    <?php
+                    if (mysqli_num_rows($result_reference) > 0) {
+                        while ($book = mysqli_fetch_assoc($result_reference)) {
                             echo '<div class="product-card">';
                             echo '  <div class="product-image-wrap">';
-                            if (isset($book['label']) && $book['label']) {
+                            if (!empty($book['label'])) {
                                 echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
                             }
                             echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
@@ -112,17 +78,20 @@
                             echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
                             echo '  <div class="product-price-row">';
                             echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
-                            if ($book['discount']) {
+                            if (!empty($book['discount'])) {
                                 echo '    <span class="product-discount">' . $book['discount'] . '</span>';
                             }
                             echo '  </div>';
-                            if ($book['old_price']) {
+                            if (!empty($book['old_price'])) {
                                 echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
                             }
                             echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
                             echo '</div>';
                         }
-                        ?>
+                    } else {
+                        echo '<p>Không có sách tham khảo nào trong database.</p>';
+                    }
+                    ?>
                     </div>
                     <div class="reference-list reference-list-luyenthi product-grid">
                         <?php
