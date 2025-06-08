@@ -8,6 +8,7 @@
     <link rel="icon" href="assets/img/icon/ico_logo.png" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/children.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -27,7 +28,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="#">Văn học</a></li>
                     <li><a href="#">Khoa học</a></li>
-                    <li><a href="#">Thiếu nhi</a></li>
+                    <li><a href="index.php?page=children">Thiếu nhi</a></li>
                     <li><a href="#">Lịch sử</a></li>
                     <li><a href="#">Kinh tế</a></li>
                 </ul>
