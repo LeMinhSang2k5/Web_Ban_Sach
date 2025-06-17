@@ -30,6 +30,7 @@ if (!$result_reference) {
                 <?php
                 if (mysqli_num_rows($result_bestseller) > 0) {
                     while ($book = mysqli_fetch_assoc($result_bestseller)) {
+                        echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
                         echo '<div class="product-card">';
                         echo '  <div class="product-image-wrap">';
                         if (!empty($book['label'])) {
@@ -49,6 +50,7 @@ if (!$result_reference) {
                         }
                         echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
                         echo '</div>';
+                        echo '</a>';
                     }
                 } else {
                     echo '<p>Không có sách bán chạy nào trong database.</p>';
@@ -68,6 +70,7 @@ if (!$result_reference) {
                     <?php
                     if (mysqli_num_rows($result_reference) > 0) {
                         while ($book = mysqli_fetch_assoc($result_reference)) {
+                            echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
                             echo '<div class="product-card">';
                             echo '  <div class="product-image-wrap">';
                             if (!empty($book['label'])) {
@@ -87,12 +90,14 @@ if (!$result_reference) {
                             }
                             echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
                             echo '</div>';
+                            echo '</a>';
                         }
                     } else {
                         echo '<p>Không có sách tham khảo nào trong database.</p>';
                     }
                     ?>
                     </div>
+
                     <div class="reference-list reference-list-luyenthi product-grid">
                         <?php
                         $books_luyenthi = [
@@ -115,6 +120,7 @@ if (!$result_reference) {
                                 'image' => './assets/img/sach-luyen-thi/nghiluanvanhoc.png'
                             ]
                         ];
+                        
                         foreach ($books_luyenthi as $book) {
                             echo '<div class="product-card">';
                             echo '  <div class="product-image-wrap">';
@@ -190,13 +196,18 @@ if (!$result_reference) {
     </div>
 
     <script>
-        document.querySelectorAll('.reference-tabs .tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.reference-tabs .tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.reference-list').forEach(list => list.classList.remove('active'));
-                const tabName = this.getAttribute('data-tab');
-                document.querySelector('.reference-list-' + tabName).classList.add('active');
+        $(document).ready(function() {
+            $('.reference-tabs .tab').click(function() {
+                // Xóa class active của tất cả tab
+                $('.reference-tabs .tab').removeClass('active');
+                // Thêm class active cho tab được click
+                $(this).addClass('active');
+
+                // Xóa class active của tất cả danh sách
+                $('.reference-list').removeClass('active');
+                // Thêm class active cho danh sách tương ứng với tab được click
+                const tabName = $(this).data('tab');
+                $('.reference-list-' + tabName).addClass('active');
             });
         });
     </script>
