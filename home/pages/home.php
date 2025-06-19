@@ -2,7 +2,7 @@
 // Lấy dữ liệu sách từ database
 
 // Truy vấn cho sách bán chạy
-$sql_bestseller = "SELECT * FROM books WHERE label = 'Bán chạy'";
+$sql_bestseller = "SELECT * FROM books WHERE label = 'Bán chạy' LIMIT 4";
 $result_bestseller = mysqli_query($conn, $sql_bestseller);
 
 if (!$result_bestseller) {
@@ -16,6 +16,14 @@ $result_reference = mysqli_query($conn, $sql_reference);
 if (!$result_reference) {
     die("Lỗi truy vấn sách tham khảo: " . mysqli_error($conn));
 }
+
+$sql_luyenthi = "SELECT * FROM books WHERE category = 'Sach luyen thi'";
+$result_luyenthi = mysqli_query($conn, $sql_luyenthi);
+
+if (!$result_luyenthi) {
+    die("Lỗi truy vấn sách luyện thi: " . mysqli_error($conn));
+}
+
 ?>
 
 <body>
@@ -67,80 +75,63 @@ if (!$result_reference) {
                 </div>
                 <div class="reference-content">
                     <div class="reference-list reference-list-thamkhao product-grid active">
-                    <?php
-                    if (mysqli_num_rows($result_reference) > 0) {
-                        while ($book = mysqli_fetch_assoc($result_reference)) {
-                            echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
-                            echo '<div class="product-card">';
-                            echo '  <div class="product-image-wrap">';
-                            if (!empty($book['label'])) {
-                                echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                        <?php
+                        if (mysqli_num_rows($result_reference) > 0) {
+                            while ($book = mysqli_fetch_assoc($result_reference)) {
+                                echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
+                                echo '<div class="product-card">';
+                                echo '  <div class="product-image-wrap">';
+                                if (!empty($book['label'])) {
+                                    echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                                }
+                                echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
+                                echo '  </div>';
+                                echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
+                                echo '  <div class="product-price-row">';
+                                echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
+                                if (!empty($book['discount'])) {
+                                    echo '    <span class="product-discount">' . $book['discount'] . '</span>';
+                                }
+                                echo '  </div>';
+                                if (!empty($book['old_price'])) {
+                                    echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
+                                }
+                                echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
+                                echo '</div>';
+                                echo '</a>';
                             }
-                            echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
-                            echo '  </div>';
-                            echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
-                            echo '  <div class="product-price-row">';
-                            echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
-                            if (!empty($book['discount'])) {
-                                echo '    <span class="product-discount">' . $book['discount'] . '</span>';
-                            }
-                            echo '  </div>';
-                            if (!empty($book['old_price'])) {
-                                echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
-                            }
-                            echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
-                            echo '</div>';
-                            echo '</a>';
+                        } else {
+                            echo '<p>Không có sách tham khảo nào trong database.</p>';
                         }
-                    } else {
-                        echo '<p>Không có sách tham khảo nào trong database.</p>';
-                    }
-                    ?>
+                        ?>
                     </div>
-
                     <div class="reference-list reference-list-luyenthi product-grid">
                         <?php
-                        $books_luyenthi = [
-                            [
-                                'title' => 'Tổng ôn hoá học',
-                                'price' => 199000,
-                                'old_price' => 250000,
-                                'discount' => '-20%',
-                                'sold' => 583,
-                                'label' => 'Bán chạy',
-                                'image' => './assets/img/sach-luyen-thi/hoahoc.png'
-                            ],
-                            [
-                                'title' => 'Kỹ năng viết văn bản nghị luận',
-                                'price' => 47000,
-                                'old_price' => 60000,
-                                'discount' => '-21%',
-                                'sold' => 175,
-                                'label' => '',
-                                'image' => './assets/img/sach-luyen-thi/nghiluanvanhoc.png'
-                            ]
-                        ];
-                        
-                        foreach ($books_luyenthi as $book) {
-                            echo '<div class="product-card">';
-                            echo '  <div class="product-image-wrap">';
-                            if (isset($book['label']) && $book['label']) {
-                                echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                        if (mysqli_num_rows($result_luyenthi) > 0) {
+                            while ($book = mysqli_fetch_assoc($result_luyenthi)) {
+                                echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
+                                echo '<div class="product-card">';
+                                echo '  <div class="product-image-wrap">';
+                                if (isset($book['label']) && $book['label']) {
+                                    echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                                }
+                                echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
+                                echo '  </div>';
+                                echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
+                                echo '  <div class="product-price-row">';
+                                echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
+                                if ($book['discount']) {
+                                    echo '    <span class="product-discount">' . $book['discount'] . '</span>';
+                                }
+                                echo '  </div>';
+                                if ($book['old_price']) {
+                                    echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
+                                }
+                                echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
+                                echo '</div>';
                             }
-                            echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
-                            echo '  </div>';
-                            echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
-                            echo '  <div class="product-price-row">';
-                            echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
-                            if ($book['discount']) {
-                                echo '    <span class="product-discount">' . $book['discount'] . '</span>';
-                            }
-                            echo '  </div>';
-                            if ($book['old_price']) {
-                                echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
-                            }
-                            echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
-                            echo '</div>';
+                        } else {
+                            echo '<p>Không có sách luyện thi nào trong database.</p>';
                         }
                         ?>
                     </div>
@@ -151,7 +142,7 @@ if (!$result_reference) {
             </div>
         </div>
 
-        <div class="content-product" id="sach-moi">
+        <div class="content-product">
             <div class="category-section">
                 <div class="category-header">
                     <span class="category-icon">
@@ -161,21 +152,17 @@ if (!$result_reference) {
                 </div>
                 <div class="category-list">
                     <div class="category-item">
-                        <img src="./assets/img/sach-thieu-nhi/harry-potter.png" alt="Harry Potter">
-                        <div class="category-name">Harry Potter</div>
-                    </div>
-                    <div class="category-item">
-                        <img src="./assets/img/sach-luyen-thi/tong-on-toan-hoc.png" alt="Ôn Luyện THPT">
-                        <div class="category-name">Ôn Luyện THPT</div>
-                    </div>
-                    <div class="category-item">
-                        <img src="./assets/img/sach-van-hoc/bupsenxanh.png" alt="Ôn Luyện THPT">
-                        <div class="category-name">Búp sen xanh</div>
+                        <a href="index.php?page=bookDetail&id=2">
+                            <img src="./assets/img/sach-van-hoc/bupsenxanh.png" alt="Ôn Luyện THPT">
+                            <div class="category-name">Búp sen xanh</div>
+                        </a>
                     </div>
 
                     <div class="category-item">
-                        <img src="./assets/img/sach-thieu-nhi/dat-rung-phuong-nam.png" alt="Ôn Luyện THPT">
-                        <div class="category-name">Đất rừng phương nam</div>
+                        <a href="index.php?page=bookDetail&id=9">
+                            <img src="./assets/img/sach-thieu-nhi/dat-rung-phuong-nam.png" alt="Ôn Luyện THPT">
+                            <div class="category-name">Đất rừng phương nam</div>
+                        </a>
                     </div>
 
                     <div class="category-item">
@@ -187,17 +174,14 @@ if (!$result_reference) {
                         <img src="./assets/img/sach-hoc-ngoai-ngu/destination-B1.png" alt="Ôn Luyện THPT">
                         <div class="category-name">Destination B1</div>
                     </div>
-
                 </div>
             </div>
-
         </div>
-
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('.reference-tabs .tab').click(function() {
+        $(document).ready(function () {
+            $('.reference-tabs .tab').click(function () {
                 // Xóa class active của tất cả tab
                 $('.reference-tabs .tab').removeClass('active');
                 // Thêm class active cho tab được click
@@ -209,6 +193,11 @@ if (!$result_reference) {
                 const tabName = $(this).data('tab');
                 $('.reference-list-' + tabName).addClass('active');
             });
+            $('.category-item').click(function () {
+                var id = $(this).data('id');
+                window.location.href = 'index.php?page=bookDetail&id=' + id;
+            });
+
         });
     </script>
 

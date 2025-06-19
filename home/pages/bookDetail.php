@@ -9,9 +9,6 @@ require_once __DIR__ . '/../config.php';
 // Lấy ID sách từ URL
 $book_id = isset($_GET['id']) ? $_GET['id'] : null;
 
-// Debug information
-echo "Book ID: " . $book_id . "<br>";
-
 // Truy vấn thông tin sách
 $sql = "SELECT * FROM books WHERE id = ?";
 $stmt = mysqli_prepare($conn, $sql);
@@ -29,6 +26,7 @@ $book = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,18 +35,23 @@ $book = mysqli_fetch_assoc($result);
     <link rel="stylesheet" href="/Web_Ban_Sach/home/assets/css/bookDetail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+
 <body>
 
     <div class="book-detail-container">
         <!-- Cột trái: Ảnh sách và các ảnh nhỏ -->
         <div class="book-detail-left">
             <div class="main-image">
-                <img id="main-img" src="<?php echo $book['image']; ?>" alt="<?php echo $book['title']; ?>" onclick="showImageOverlay(this.src)">
+                <img id="main-img" src="<?php echo $book['image']; ?>" alt="<?php echo $book['title']; ?>"
+                    onclick="showImageOverlay(this.src)">
             </div>
             <div class="thumbnail-list">
-                <img src="<?php echo $book['image']; ?>" alt="<?php echo $book['title']; ?>" onclick="showImageOverlay(this.src)">
-                <img src="<?php echo $book['image']; ?>" alt="<?php echo $book['title']; ?>" onclick="showImageOverlay(this.src)">
-                <img src="<?php echo $book['image']; ?>" alt="<?php echo $book['title']; ?>" onclick="showImageOverlay(this.src)">
+                <img src="<?php echo $book['image']; ?>" alt="<?php echo $book['title']; ?>"
+                    onclick="showImageOverlay(this.src)">
+                <img src="<?php echo $book['image']; ?>" alt="<?php echo $book['title']; ?>"
+                    onclick="showImageOverlay(this.src)">
+                <img src="<?php echo $book['image']; ?>" alt="<?php echo $book['title']; ?>"
+                    onclick="showImageOverlay(this.src)">
                 <div class="more-thumbnails">+5</div>
             </div>
             <button class="add-to-cart">Thêm vào giỏ hàng</button>
@@ -62,7 +65,7 @@ $book = mysqli_fetch_assoc($result);
         <!-- Cột phải: Thông tin sách -->
         <div class="book-detail-right">
             <?php if (!empty($book['label'])): ?>
-            <div class="book-badge"><?php echo $book['label']; ?></div>
+                <div class="book-badge"><?php echo $book['label']; ?></div>
             <?php endif; ?>
             <h1 class="book-title"><?php echo $book['title']; ?></h1>
             <div class="book-supplier">Nhà cung cấp: <a href="#"><?php echo $book['supplier']; ?></a></div>
@@ -73,10 +76,10 @@ $book = mysqli_fetch_assoc($result);
             <div class="book-price">
                 <span class="new-price"><?php echo number_format($book['price'], 0, ",", "."); ?> đ</span>
                 <?php if (!empty($book['old_price'])): ?>
-                <span class="old-price"><?php echo number_format($book['old_price'], 0, ",", "."); ?> đ</span>
+                    <span class="old-price"><?php echo number_format($book['old_price'], 0, ",", "."); ?> đ</span>
                 <?php endif; ?>
                 <?php if (!empty($book['discount'])): ?>
-                <span class="discount"><?php echo $book['discount']; ?></span>
+                    <span class="discount"><?php echo $book['discount']; ?></span>
                 <?php endif; ?>
             </div>
             <div class="book-stock"><?php echo $book['stock']; ?> nhà sách còn hàng</div>
@@ -106,17 +109,42 @@ $book = mysqli_fetch_assoc($result);
             <!-- phần thông tin chi tiết-->
             <div class="book-info-content" id="tab-info">
                 <div class="book-info-table">
-                    <ul>
-                        <li>Mã hàng: <?php echo $book['code']; ?></li>
-                        <li>Tên Nhà Cung Cấp: <?php echo $book['supplier']; ?></li>
-                        <li>Tác giả: <?php echo $book['author']; ?></li>
-                        <li>Nhà xuất bản: <?php echo $book['publisher']; ?></li>
-                        <li>Năm xuất bản: <?php echo $book['publish_year']; ?></li>
-                        <li>Thể loại: <?php echo $book['category']; ?></li>
-                        <li>Số trang: <?php echo $book['pages']; ?></li>
-                        <li>Kích thước: <?php echo $book['size']; ?></li>
-                        <li>Hình thức bìa: <?php echo $book['cover_type']; ?></li>
-                    </ul>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Mã hàng:</div>
+                        <div class="book-info-value"><?php echo $book['code']; ?></div>
+                    </div>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Tên Nhà Cung Cấp:</div>
+                        <div class="book-info-value"><?php echo $book['supplier']; ?></div>
+                    </div>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Tác giả:</div>
+                        <div class="book-info-value"><?php echo $book['author']; ?></div>
+                    </div>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Nhà xuất bản:</div>
+                        <div class="book-info-value"><?php echo $book['publisher']; ?></div>
+                    </div>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Năm xuất bản:</div>
+                        <div class="book-info-value"><?php echo $book['publish_year']; ?></div>
+                    </div>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Thể loại:</div>
+                        <div class="book-info-value"><?php echo $book['category']; ?></div>
+                    </div>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Số trang:</div>
+                        <div class="book-info-value"><?php echo $book['pages']; ?></div>
+                    </div>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Kích thước:</div>
+                        <div class="book-info-value"><?php echo $book['size']; ?></div>
+                    </div>
+                    <div class="book-info-row">
+                        <div class="book-info-label">Hình thức bìa:</div>
+                        <div class="book-info-value"><?php echo $book['cover_type']; ?></div>
+                    </div>
                 </div>
             </div>
 
@@ -129,40 +157,68 @@ $book = mysqli_fetch_assoc($result);
         </div>
     </div>
 
+    <!-- Box đánh giá sản phẩm -->
+    <div class="book-rating-box">
+        <div class="book-rating-score">
+            <span class="score">0</span><span class="score-max">/5</span>
+            <div class="book-rating-star-list">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            </div>
+            <div class="book-rating-count">
+                (0 đánh giá)
+            </div>
+        </div>
+        <div class="book-rating-bar-list">
+            <div class="bar-row"><span>5 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
+            <div class="bar-row"><span>4 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
+            <div class="bar-row"><span>3 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
+            <div class="bar-row"><span>2 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
+            <div class="bar-row"><span>1 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
+        </div>
+        <div class="book-rating-note">
+            Chỉ có thành viên mới có thể viết nhận xét. Vui lòng <a href="#">đăng nhập</a> hoặc <a href="#">đăng ký</a>.
+        </div>
+    </div>
+
     <!-- phần javascript-->
     <script>
-    function showTab(tab) {
-        document.getElementById('tab-info').style.display = tab === 'info' ? '' : 'none';
-        document.getElementById('tab-desc').style.display = tab === 'desc' ? '' : 'none';
-        var tabs = document.querySelectorAll('.book-tabs .tab');
-        tabs[0].classList.toggle('active', tab === 'info');
-        tabs[1].classList.toggle('active', tab === 'desc');
-    }
+        function showTab(tab) {
+            document.getElementById('tab-info').style.display = tab === 'info' ? '' : 'none';
+            document.getElementById('tab-desc').style.display = tab === 'desc' ? '' : 'none';
+            var tabs = document.querySelectorAll('.book-tabs .tab');
+            tabs[0].classList.toggle('active', tab === 'info');
+            tabs[1].classList.toggle('active', tab === 'desc');
+        }
 
-    function changeQuantity(delta) {
-        var input = document.getElementById('quantity-input');
-        var value = parseInt(input.value) || 1;
-        value += delta;
-        if (value < 1) value = 1;
-        input.value = value;
-    }
+        function changeQuantity(delta) {
+            var input = document.getElementById('quantity-input');
+            var value = parseInt(input.value) || 1;
+            value += delta;
+            if (value < 1) value = 1;
+            input.value = value;
+        }
 
-    function changeMainImage(src) {
-        document.getElementById('main-img').src = src;
-    }
+        function changeMainImage(src) {
+            document.getElementById('main-img').src = src;
+        }
 
-    function showImageOverlay(src) {
-        // Tạo overlay
-        var overlay = document.createElement('div');
-        overlay.className = 'img-overlay';
-        overlay.onclick = function() { document.body.removeChild(overlay); };
-        // Tạo ảnh lớn
-        var img = document.createElement('img');
-        img.src = src;
-        overlay.appendChild(img);
-        document.body.appendChild(overlay);
-    }
+        function showImageOverlay(src) {
+            // Tạo overlay
+            var overlay = document.createElement('div');
+            overlay.className = 'img-overlay';
+            overlay.onclick = function () { document.body.removeChild(overlay); };
+            // Tạo ảnh lớn
+            var img = document.createElement('img');
+            img.src = src;
+            overlay.appendChild(img);
+            document.body.appendChild(overlay);
+        }
     </script>
 
 </body>
+
 </html>
