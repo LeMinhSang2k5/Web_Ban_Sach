@@ -1,6 +1,6 @@
 .book-detail-container {
     display: flex;
-    gap: 32px;
+    flex-direction: row;
     max-width: 1100px;
     margin: 30px auto;
     font-family: Arial, sans-serif;
@@ -14,6 +14,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    float: left;
+    margin-right: 20px;
   }
   .main-image img {
     width: 220px;
@@ -191,19 +193,7 @@
     border-bottom: 2px solid #d70018;
     font-weight: bold;
   }
-  .book-info-table ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 16px;
-}
 
-.book-info-table li {
-    display: flex;
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
-    align-items: center;
-}
 
 .book-info-table .info-label {
     min-width: 180px;
@@ -256,7 +246,6 @@
 }
   .book-description {
     font-size: 15px;
-    color: #444;
     background: #f9f9f9;
     border-radius: 4px;
     padding: 12px;
@@ -284,3 +273,137 @@
     border-radius: 8px;
     display: block;
 }
+
+.book-info-table {
+  margin-top: 10px;
+}
+.book-info-row {
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10px 0;
+  align-items: center;
+}
+.book-info-label {
+  min-width: 160px;
+  color: #222;
+  font-weight: 500;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.book-info-value {
+  color: #333;
+  font-size: 15px;
+  margin-left: 12px;
+  word-break: break-word;
+}
+
+/* --- ĐÁNH GIÁ SẢN PHẨM FAHASA STYLE --- */
+.book-rating-box {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px #0001;
+  padding: 32px 32px 24px 32px;
+  margin: 32px auto 0 auto;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 32px;
+}
+.book-rating-left {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #f0f0f0;
+  padding-right: 32px;
+  min-height: 160px;
+}
+.book-rating-score {
+  font-size: 44px;
+  font-weight: bold;
+  color: #d70018;
+  margin-bottom: 2px;
+  line-height: 1;
+  text-align: center; 
+}
+.book-rating-score .score-max {
+  font-size: 24px;
+  color: #888;
+  font-weight: 400;
+  margin-left: 2px;
+}
+.book-rating-star-list {
+  color: #e0e0e0;
+  font-size: 18px;
+  margin-bottom: 4px;
+  letter-spacing: 2px;
+}
+.book-rating-star-list .star {
+  color: #ffd600;
+}
+.book-rating-count {
+  color: #888;
+  font-size: 15px;
+  margin-bottom: 0;
+}
+.book-rating-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 32px;
+}
+.book-rating-bar-list {
+  width: 100%;
+  max-width: 260px; /* Giảm lại cho gọn */
+  margin: 0 0 12px 0;
+}
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Giảm khoảng cách */
+  margin-bottom: 4px;
+  font-size: 13px; /* Nhỏ lại */
+}
+.bar-row > span:first-child {
+  width: 48px;
+  text-align: right;
+  color: #888;
+  flex-shrink: 0;
+}
+.bar {
+  flex: 1;
+  height: 10px;
+  background: #f0f0f0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0 4px;
+}
+.bar-inner {
+  height: 100%;
+  background: #ffd600;
+  border-radius: 5px;
+}
+.bar-row > span:last-child {
+  width: 36px;
+  text-align: left;
+  color: #888;
+  flex-shrink: 0;
+}
+.book-rating-note {
+  color: #888;
+  font-size: 15px;
+  margin-top: 18px;
+}
+.book-rating-note a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+}
+.book-rating-note a:hover {
+  text-decoration: underline;
+}
+/* --- END ĐÁNH GIÁ SẢN PHẨM --- */
