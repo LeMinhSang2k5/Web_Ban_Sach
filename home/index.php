@@ -39,6 +39,9 @@ include 'db.php';
         case 'bookDetail':
             include 'pages/bookDetail.php';
             break;
+        case 'cart':
+            include 'pages/cart.php';
+            break;
         default:
             include 'pages/home.php';
             break;

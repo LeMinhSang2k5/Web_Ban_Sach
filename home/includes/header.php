@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/../config.php';
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -41,9 +44,44 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#sach-moi" class="nav-link"><i class="fa-solid fa-bell"></i>Thông báo</a></li>
-                    <li><a href="#best-seller" class="nav-link"><i class="fas fa-shopping-cart"></i>Giỏ hàng</a></li>
-                    <li class="btnLogin-popup"><a href="#van-hoc" class="nav-link "><i class="fas fa-user btnLogin-popup"></i>Tài Khoản</a></li>
+                    <li><a href="#" class="nav-link"><i class="fa-solid fa-bell"></i>Thông báo</a></li>
+                    <li>
+                        <a href="index.php?page=cart" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>Giỏ hàng
+                            <span id="cart-count" class="cart-count">
+                                <?php
+                                if (isset($_SESSION['cart'])) {
+                                    $total_items = 0;
+                                    foreach ($_SESSION['cart'] as $item) {
+                                        $total_items += $item['quantity'];
+                                    }
+                                    echo $total_items;
+                                } else {
+                                    echo '0';
+                                }
+                                ?>
+                            </span>
+                        </a>
+                    </li>
+                    <?php if (isLoggedIn()): ?>
+                        <li class="user-account">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-user"></i>
+                                <?php echo htmlspecialchars($_SESSION['username']); ?>
+                            </a>
+                            <div class="account-dropdown">
+                                <form action="config.php" method="POST">
+                                    <button type="submit" name="logout" class="logout-btn">Đăng xuất</button>
+                                </form>
+                            </div>
+                        </li>
+                    <?php else: ?>
+                        <li class="btnLogin-popup">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-user btnLogin-popup"></i>Tài Khoản
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>
@@ -52,7 +90,7 @@
         <div class="wrapper">
             <span class="icon-close"><i class="fa-solid fa-xmark"></i></span>
             <div class="form-box <?= isActiveForm('login', $activeForm); ?> login ">
-                <h2>Login</h2>
+                <h2>Đăng Nhập</h2>
                 <?= showError($error['login']); ?>
                 <form action="config.php" method="POST">
                     <div class="input-box">
@@ -63,27 +101,27 @@
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-lock"></i></span>
                         <input type="password" name="password" required>
-                        <label>Password</label>
+                        <label>Mật khẩu</label>
                     </div>
                     <div class="remember-forgot">
                         <label><input type="checkbox">
-                            remember me</label>
-                        <a href="#">Forgot Password?</a>
+                            Ghi nhớ đăng nhập</label>
+                        <a href="#">Quên mật khẩu?</a>
                     </div>
-                    <button type="submit" class="btnn" name="login">Login</button>
+                    <button type="submit" class="btnn" name="login">Đăng Nhập</button>
                     <div class="login-register">
-                        <p> Don't have a account?<a href="#" class="register-link">Register</a></p>
+                        <p>Bạn chưa có tài khoản? <a href="#" class="register-link">Đăng ký</a></p>
                     </div>
                 </form>
             </div>
             <div class="form-box register <?= isActiveForm('register', $activeForm); ?>">
-                <h2>Registration</h2>
+                <h2>Đăng Ký</h2>
                 <?= showError($error['register']); ?>
                 <form action="config.php" method="POST">
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-user"></i></span>
                         <input type="text" name="username" required>
-                        <label>Username</label>
+                        <label>Tên người dùng</label>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-envelope"></i></span>
@@ -93,22 +131,57 @@
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-lock"></i></span>
                         <input type="password" name="password" required>
-                        <label>Password</label>
+                        <label>Mật khẩu</label>
                     </div>
                     <div class="remember-forgot">
-                        <label><input type="checkbox">
-                            I agree to the terms & conditions</label>
-
+                        <label><input type="checkbox" required>
+                            Tôi đồng ý với các điều khoản & điều kiện</label>
                     </div>
-                    <button type="submit" class="btnn" name="register">Register</button>
+                    <button type="submit" class="btnn" name="register">Đăng Ký</button>
                     <div class="login-register">
-                        <p> Already have a account?<a href="#" class="login-link">Login</a></p>
+                        <p>Bạn đã có tài khoản? <a href="#" class="login-link">Đăng nhập</a></p>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     </div>
+    <?php 
+    $notification = getNotification();
+    if ($notification): 
+    ?>
+    <div class="notification <?php echo $notification['type']; ?>">
+        <i class="fas <?php 
+            echo $notification['type'] === 'success' ? 'fa-check-circle' : 
+                ($notification['type'] === 'error' ? 'fa-times-circle' : 'fa-exclamation-circle'); 
+        ?>"></i>
+        <div class="message"><?php echo htmlspecialchars($notification['message']); ?></div>
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hiển thị notification
+        const notification = document.querySelector('.notification');
+        if (notification) {
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                notification.classList.remove('show');
+                // Xóa notification sau khi animation kết thúc
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            }, 3000);
+        }
+    });
+    </script>
 </body>
 
 </html>

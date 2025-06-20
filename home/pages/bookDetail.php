@@ -54,7 +54,7 @@ $book = mysqli_fetch_assoc($result);
                     onclick="showImageOverlay(this.src)">
                 <div class="more-thumbnails">+5</div>
             </div>
-            <button class="add-to-cart">Thêm vào giỏ hàng</button>
+            <button class="add-to-cart" onclick="addToCart(<?php echo $book['id']; ?>)">Thêm vào giỏ hàng</button>
             <button class="buy-now">Mua ngay</button>
             <div class="policy-list">
                 <p>Thời gian giao hàng: Giao nhanh và uy tín</p>
@@ -216,6 +216,45 @@ $book = mysqli_fetch_assoc($result);
             img.src = src;
             overlay.appendChild(img);
             document.body.appendChild(overlay);
+        }
+
+        function addToCart(bookId) {
+            console.log('Adding book to cart:', bookId);
+            // Lấy số lượng từ input
+            const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
+            console.log('Quantity:', quantity);
+            
+            // Gửi request đến server
+            fetch('index.php?page=add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'book_id=' + bookId + '&quantity=' + quantity
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+                if (data.success) {
+                    // Hiển thị thông báo thành công
+                    alert('Đã thêm sách vào giỏ hàng thành công!');
+                    
+                    // Cập nhật số lượng trong giỏ hàng
+                    if (data.total_items) {
+                        const cartCount = document.getElementById('cart-count');
+                        if (cartCount) {
+                            cartCount.textContent = data.total_items;
+                        }
+                    }
+                } else {
+                    // Hiển thị thông báo lỗi
+                    alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi thêm vào giỏ hàng');
+            });
         }
     </script>
 

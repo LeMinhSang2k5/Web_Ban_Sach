@@ -30,8 +30,6 @@ body {
   line-height: 1.6;
   color: var(--dark-color);
   background-color: var(--background-color);
-  padding-top: 50px;
-
 }
 #banner{
   height: 600px;
@@ -72,6 +70,8 @@ header {
 
   justify-content: center;
   display: flex;
+
+  
 }
 
 header .container {
@@ -238,6 +238,7 @@ header .search-bar button i {
   
 
 .main-contain {
+  padding-top: 70px;
   background-color: var(--background-color);
 }
 
@@ -868,3 +869,127 @@ align-items: center;
   text-decoration: none;
   color: inherit;
 }
+
+/* Notification styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: -300px;
+  /* Start off-screen */
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 9999;
+  transition: right 0.5s ease;
+  max-width: 300px;
+}
+
+.notification.show {
+  right: 20px;
+  /* Slide in from right */
+}
+
+.notification i {
+  font-size: 20px;
+}
+
+.notification .message {
+  flex-grow: 1;
+}
+
+.notification.success {
+  background-color: #4CAF50;
+}
+
+.notification.error {
+  background-color: #f44336;
+}
+
+.notification.warning {
+  background-color: #ff9800;
+}
+
+/* Progress bar for notification */
+.notification .progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.notification .progress-bar {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  animation: progress 3s linear forwards;
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+}
+
+/* Styles cho user account dropdown */
+.user-account {
+  position: relative;
+}
+
+.user-account .account-dropdown {
+  position: absolute;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border-radius: 4px;
+  padding: 8px;
+  z-index: 1000;
+  min-width: 150px;
+  display: none;
+}
+
+.user-account:hover .account-dropdown {
+  display: block;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #333;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #f5f5f5;
+  color: #e74c3c;
+}
+
+.account-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.account-dropdown:hover {
+  display: block;
+}
+
