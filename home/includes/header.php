@@ -12,6 +12,7 @@ require_once __DIR__ . '/../config.php';
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/children.css">
+    <link rel="stylesheet" href="assets/css/vanhoc.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
