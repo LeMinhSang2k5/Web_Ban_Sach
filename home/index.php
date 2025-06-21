@@ -42,6 +42,9 @@ include 'db.php';
         case 'cart':
             include 'pages/cart.php';
             break;
+        case 'literature':
+            include 'pages/literatureBook.php';
+            break;
         default:
             include 'pages/home.php';
             break;

@@ -29,7 +29,7 @@ require_once __DIR__ . '/../config.php';
                     <img src="assets/img/icon/ico_menu.svg">
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Văn học</a></li>
+                    <li><a href="index.php?page=literature">Văn học</a></li>
                     <li><a href="#">Khoa học</a></li>
                     <li><a href="index.php?page=children">Thiếu nhi</a></li>
                     <li><a href="#">Lịch sử</a></li>
