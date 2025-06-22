@@ -139,7 +139,7 @@ $book = mysqli_fetch_assoc($result);
                     </div>
                     <div class="book-info-row">
                         <div class="book-info-label">Kích thước:</div>
-                        <div class="book-info-value"><?php echo $book['size']; ?></div>
+                        <div class="book-info-value"><?php echo $book['size']; ?> cm</div>
                     </div>
                     <div class="book-info-row">
                         <div class="book-info-label">Hình thức bìa:</div>
