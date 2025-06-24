@@ -1,5 +1,5 @@
 <?php
-$sql_reference = "SELECT * FROM books WHERE label = 'bán chạy' AND category = 'thiếu nhi' LIMIT 4"  ;
+$sql_reference = "SELECT * FROM books WHERE label = 'bán chạy' AND category = 'thiếu nhi' LIMIT 4";
 $result_reference = mysqli_query($conn, $sql_reference);
 
 $sql_combo = "SELECT * FROM books WHERE category = 'thiếu nhi' AND subcategory = 'combo thiếu nhi' LIMIT 4";
@@ -10,6 +10,32 @@ $result_kim_dong = mysqli_query($conn, $sql_kim_dong);
 
 $sql_dinh_ti = "SELECT * FROM books WHERE category = 'thiếu nhi' AND supplier = 'Đình Tị' LIMIT 4";
 $result_dinh_ti = mysqli_query($conn, $sql_dinh_ti);
+
+function renderBookCard($book)
+{
+    $html = '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
+    $html .= '<div class="product-card">';
+    $html .= '  <div class="product-image-wrap">';
+    if (!empty($book['label'])) {
+        $html .= '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+    }
+    $html .= '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
+    $html .= '  </div>';
+    $html .= '  <h3 class="product-title">' . $book['title'] . '</h3>';
+    $html .= '  <div class="product-price-row">';
+    $html .= '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
+    if (!empty($book['discount'])) {
+        $html .= '    <span class="product-discount">' . $book['discount'] . '</span>';
+    }
+    $html .= '  </div>';
+    if (!empty($book['old_price'])) {
+        $html .= '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
+    }
+    $html .= '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
+    $html .= '</div>';
+    $html .= '</a>';
+    return $html;
+}
 ?>
 
 
@@ -84,27 +110,7 @@ $result_dinh_ti = mysqli_query($conn, $sql_dinh_ti);
                         <?php
                         if (mysqli_num_rows($result_reference) > 0) {
                             while ($book = mysqli_fetch_assoc($result_reference)) {
-                                echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
-                                echo '<div class="product-card">';
-                                echo '  <div class="product-image-wrap">';
-                                if (!empty($book['label'])) {
-                                    echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
-                                }
-                                echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
-                                echo '  </div>';
-                                echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
-                                echo '  <div class="product-price-row">';
-                                echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
-                                if (!empty($book['discount'])) {
-                                    echo '    <span class="product-discount">' . $book['discount'] . '</span>';
-                                }
-                                echo '  </div>';
-                                if (!empty($book['old_price'])) {
-                                    echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
-                                }
-                                echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
-                                echo '</div>';
-                                echo '</a>';
+                                echo renderBookCard($book);
                             }
                         } else {
                             echo '<p>Không có sách tham khảo nào trong database.</p>';
@@ -156,27 +162,7 @@ $result_dinh_ti = mysqli_query($conn, $sql_dinh_ti);
                         <?php
                         if (mysqli_num_rows($result_combo) > 0) {
                             while ($book = mysqli_fetch_assoc($result_combo)) {
-                                echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
-                                echo '<div class="product-card">';
-                                echo '  <div class="product-image-wrap">';
-                                if (!empty($book['label'])) {
-                                    echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
-                                }
-                                echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
-                                echo '  </div>';
-                                echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
-                                echo '  <div class="product-price-row">';
-                                echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
-                                if (!empty($book['discount'])) {
-                                    echo '    <span class="product-discount">' . $book['discount'] . '</span>';
-                                }
-                                echo '  </div>';
-                                if (!empty($book['old_price'])) {
-                                    echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
-                                }
-                                echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
-                                echo '</div>';
-                                echo '</a>';
+                                echo renderBookCard($book);
                             }
                         } else {
                             echo '<p>Không có sách tham khảo nào trong database.</p>';
@@ -187,7 +173,7 @@ $result_dinh_ti = mysqli_query($conn, $sql_dinh_ti);
             </div>
         </div>
 
-        <div class="item-title" id = "tu-sach">
+        <div class="item-title" id="tu-sach">
             <img src="assets/img/banner/tu-sach.png" alt="Banner">
         </div>
 
@@ -201,27 +187,7 @@ $result_dinh_ti = mysqli_query($conn, $sql_dinh_ti);
                         <?php
                         if (mysqli_num_rows($result_kim_dong) > 0) {
                             while ($book = mysqli_fetch_assoc($result_kim_dong)) {
-                                echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
-                                echo '<div class="product-card">';
-                                echo '  <div class="product-image-wrap">';
-                                if (!empty($book['label'])) {
-                                    echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
-                                }
-                                echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
-                                echo '  </div>';
-                                echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
-                                echo '  <div class="product-price-row">';
-                                echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
-                                if (!empty($book['discount'])) {
-                                    echo '    <span class="product-discount">' . $book['discount'] . '</span>';
-                                }
-                                echo '  </div>';
-                                if (!empty($book['old_price'])) {
-                                    echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
-                                }
-                                echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
-                                echo '</div>';
-                                echo '</a>';
+                                echo renderBookCard($book);
                             }
                         } else {
                             echo '<p>Không có sách tham khảo nào trong database.</p>';
@@ -242,27 +208,7 @@ $result_dinh_ti = mysqli_query($conn, $sql_dinh_ti);
                         <?php
                         if (mysqli_num_rows($result_dinh_ti) > 0) {
                             while ($book = mysqli_fetch_assoc($result_dinh_ti)) {
-                                echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
-                                echo '<div class="product-card">';
-                                echo '  <div class="product-image-wrap">';
-                                if (!empty($book['label'])) {
-                                    echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
-                                }
-                                echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
-                                echo '  </div>';
-                                echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
-                                echo '  <div class="product-price-row">';
-                                echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
-                                if (!empty($book['discount'])) {
-                                    echo '    <span class="product-discount">' . $book['discount'] . '</span>';
-                                }
-                                echo '  </div>';
-                                if (!empty($book['old_price'])) {
-                                    echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
-                                }
-                                echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
-                                echo '</div>';
-                                echo '</a>';
+                                echo renderBookCard($book);
                             }
                         } else {
                             echo '<p>Không có sách tham khảo nào trong database.</p>';
