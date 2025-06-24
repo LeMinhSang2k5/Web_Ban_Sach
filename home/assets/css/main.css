@@ -70,8 +70,6 @@ header {
 
   justify-content: center;
   display: flex;
-
-  
 }
 
 header .container {
@@ -238,14 +236,13 @@ header .search-bar button i {
   
 
 .main-contain {
-  padding-top: 70px;
+  margin-top: 100px;
   background-color: var(--background-color);
 }
 
 /* -- Product -- */
 
 .content-product{
-  border: 1px solid red;
   padding: 10px;
   margin: 40px 200px 40px 200px;
   border-radius: 10px;

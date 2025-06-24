@@ -1,5 +1,4 @@
 <?php
-// Lấy dữ liệu sách từ database
 
 // Truy vấn cho sách bán chạy
 $sql_bestseller = "SELECT * FROM books WHERE label = 'Bán chạy' LIMIT 4";
@@ -180,6 +179,7 @@ if (!$result_luyenthi) {
     </div>
 
     <script>
+        
         $(document).ready(function () {
             $('.reference-tabs .tab').click(function () {
                 // Xóa class active của tất cả tab

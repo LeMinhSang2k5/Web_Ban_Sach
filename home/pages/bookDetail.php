@@ -1,11 +1,4 @@
 <?php
-// Bật báo lỗi để debug
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Kết nối database
-require_once __DIR__ . '/../config.php';
-
 // Lấy ID sách từ URL
 $book_id = isset($_GET['id']) ? $_GET['id'] : null;
 
@@ -13,7 +6,7 @@ $book_id = isset($_GET['id']) ? $_GET['id'] : null;
 $sql = "SELECT * FROM books WHERE id = ?";
 $stmt = mysqli_prepare($conn, $sql);
 if (!$stmt) {
-    die("Lỗi prepare statement: " . mysqli_error($conn));
+    error_log("Lỗi prepare statement: " . mysqli_error($conn));
 }
 
 mysqli_stmt_bind_param($stmt, "i", $book_id);
@@ -88,9 +81,7 @@ $book = mysqli_fetch_assoc($result);
                 <div>Giao hàng tiêu chuẩn - Dự kiến giao Thứ ba - 27/05</div>
             </div>
             <div class="book-promotions">
-                <span>Mã giảm 10k</span>
-                <span>Mã giảm 20k</span>
-                <span>Zalopay: giảm 15%</span>
+                <span>Đang cập nhật</span>
             </div>
 
             <!-- phần số lượng sản phẩm-->
@@ -210,22 +201,53 @@ $book = mysqli_fetch_assoc($result);
             // Tạo overlay
             var overlay = document.createElement('div');
             overlay.className = 'img-overlay';
-            overlay.onclick = function () { document.body.removeChild(overlay); };
+            
             // Tạo ảnh lớn
             var img = document.createElement('img');
             img.src = src;
+            img.onclick = function(e) { e.stopPropagation(); }; // Ngăn đóng khi click vào ảnh
+            
+            // Hiệu ứng đóng smooth
+            function closeOverlay() {
+                overlay.classList.add('closing');
+                setTimeout(function() {
+                    if (overlay && overlay.parentNode) {
+                        document.body.removeChild(overlay);
+                    }
+                }, 300);
+            }
+            
+            overlay.onclick = closeOverlay;
+            
+            // Đóng bằng phím ESC
+            function handleKeyPress(e) {
+                if (e.key === 'Escape') {
+                    closeOverlay();
+                    document.removeEventListener('keydown', handleKeyPress);
+                }
+            }
+            document.addEventListener('keydown', handleKeyPress);
+            
             overlay.appendChild(img);
             document.body.appendChild(overlay);
+            
+            // Ngăn cuộn trang khi overlay mở
+            document.body.style.overflow = 'hidden';
+            
+            // Khôi phục cuộn trang khi đóng
+            overlay.addEventListener('animationend', function(e) {
+                if (e.animationName === 'fadeOut') {
+                    document.body.style.overflow = '';
+                }
+            });
         }
 
         function addToCart(bookId) {
-            console.log('Adding book to cart:', bookId);
             // Lấy số lượng từ input
             const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
-            console.log('Quantity:', quantity);
             
             // Gửi request đến server
-            fetch('index.php?page=add_to_cart', {
+            fetch('pages/add_to_cart.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -236,24 +258,10 @@ $book = mysqli_fetch_assoc($result);
             .then(data => {
                 console.log('Server response:', data);
                 if (data.success) {
-                    // Hiển thị thông báo thành công
                     alert('Đã thêm sách vào giỏ hàng thành công!');
-                    
-                    // Cập nhật số lượng trong giỏ hàng
-                    if (data.total_items) {
-                        const cartCount = document.getElementById('cart-count');
-                        if (cartCount) {
-                            cartCount.textContent = data.total_items;
-                        }
-                    }
                 } else {
-                    // Hiển thị thông báo lỗi
                     alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra khi thêm vào giỏ hàng');
             });
         }
     </script>

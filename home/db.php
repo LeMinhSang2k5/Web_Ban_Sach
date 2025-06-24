@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 $host = "localhost";
 $username = "root";  // Thay đổi thành root vì đây là user mặc định của XAMPP
 $password = "";      // Mặc định XAMPP không có password
-$database = "mydb";
+$database = "bookstore";
 
 // Tạo kết nối
 $conn = mysqli_connect($host, $username, $password, $database);
