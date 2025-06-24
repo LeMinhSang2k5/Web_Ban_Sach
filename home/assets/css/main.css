@@ -31,10 +31,6 @@ body {
   color: var(--dark-color);
   background-color: var(--background-color);
 }
-#banner{
-  height: 600px;
-  object-fit: cover;
-}
 
 a {
   text-decoration: none;
@@ -237,7 +233,7 @@ header .search-bar button i {
 
 .main-contain {
   margin-top: 100px;
-  background-color: var(--background-color);
+  background-color: #FFA42C;
 }
 
 /* -- Product -- */
@@ -551,238 +547,6 @@ right: 10px;
 align-items: center;
 }
 
-/* .book-detail-container {
-  display: flex;
-  gap: 32px;
-  max-width: 1100px;
-  margin: 30px auto;
-  font-family: Arial, sans-serif;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px #0001;
-  padding: 32px;
-}
-.book-detail-left {
-  width: 270px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.main-image img {
-  width: 220px;
-  height: 320px;
-  object-fit: cover;
-  border: 1px solid #eee;
-  border-radius: 4px;
-}
-.thumbnail-list {
-  display: flex;
-  gap: 10px;
-  margin: 12px 0;
-}
-.thumbnail-list img {
-  width: 40px;
-  height: 60px;
-  object-fit: cover;
-  border: 1px solid #eee;
-  border-radius: 2px;
-}
-.more-thumbnails {
-  width: 40px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  color: #888;
-  font-size: 16px;
-  border-radius: 2px;
-  border: 1px solid #eee;
-}
-.add-to-cart, .buy-now {
-  width: 100%;
-  margin: 8px 0 0 0;
-  padding: 10px 0;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-}
-.add-to-cart {
-  background: #fff;
-  color: #d70018;
-  border: 1.5px solid #d70018;
-  margin-bottom: 8px;
-}
-.buy-now {
-  background: var(--primary-color);
-  color: #fff;
-}
-
-.policy-list {
-  margin-top: 18px;
-  font-size: 12px;
-  color: #444;
-}
-.policy-list p {
-  margin-bottom: 4px;
-}
-.book-detail-right {
-  flex: 1;
-  min-width: 0;
-}
-.book-badge {
-  display: inline-block;
-  background: #ff9800;
-  color: #fff;
-  font-size: 13px;
-  padding: 2px 10px;
-  border-radius: 3px;
-  margin-bottom: 8px;
-}
-.book-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 6px 0 8px 0;
-}
-.book-supplier, .book-publisher {
-  font-size: 15px;
-  color: #555;
-  margin-bottom: 2px;
-}
-.book-supplier a { color: #1976d2; text-decoration: none; }
-.book-rating {
-  color: #ff9800;
-  font-size: 15px;
-  margin-bottom: 8px;
-}
-.book-price {
-  font-size: 22px;
-  font-weight: bold;
-  color: #d70018;
-  margin-bottom: 6px;
-}
-.book-price .old-price {
-  font-size: 16px;
-  color: #888;
-  text-decoration: line-through;
-  margin-left: 10px;
-  font-weight: normal;
-}
-.book-price .discount {
-  font-size: 15px;
-  color: #fff;
-  background: #d70018;
-  border-radius: 3px;
-  padding: 2px 7px;
-  margin-left: 10px;
-}
-.book-stock {
-  color: #388e3c;
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-.shipping-info {
-  font-size: 14px;
-  color: #444;
-  margin-bottom: 8px;
-}
-.shipping-info a { color: #1976d2; text-decoration: underline; }
-
-.book-promotions {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.book-promotions span {
-  background: #f5f5f5;
-  color: #d70018;
-  font-size: 13px;
-  border-radius: 3px;
-  padding: 2px 7px;
-  border: 1px solid #ffd180;
-}
-.book-quantity {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.book-quantity button {
-  width: 28px;
-  height: 28px;
-  border: 1px solid #ccc;
-  background: #fff;
-  font-size: 18px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-.book-quantity input {
-  width: 36px;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  height: 28px;
-}
-.book-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.book-tabs .tab {
-  padding: 6px 18px;
-  border-radius: 3px 3px 0 0;
-  background: #f5f5f5;
-  color: #888;
-  cursor: pointer;
-  font-size: 15px;
-}
-.book-tabs .tab.active {
-  background: #fff;
-  color: #d70018;
-  border-bottom: 2px solid #d70018;
-  font-weight: bold;
-}
-.book-info-table ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 12px 0;
-  font-size: 15px;
-  color: #444;
-}
-.book-info-table li {
-  margin-bottom: 4px;
-}
-.book-description {
-  font-size: 15px;
-  color: #444;
-  background: #f9f9f9;
-  border-radius: 4px;
-  padding: 12px;
-  margin-top: 8px;
-  text-align: justify;
-}
-
-.img-overlay {
-  max-width: 100%;
-  max-height: 100%;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-.img-overlay img {
-  max-width: 100%;
-  max-height: 100%;
-  box-shadow: 0 0 20px #000;
-  background: #fff;
-  padding: 10px;
-  border-radius: 8px;
-} */
 
 /* -- Category -- */
 
@@ -990,3 +754,76 @@ align-items: center;
   display: block;
 }
 
+
+/* -- Banner -- */
+.item-banner{
+  width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.slider-banner {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  margin: 0 auto;
+  overflow: hidden;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+.slider-banner .slider-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slider-banner .slider-item {
+  width: 100%;  
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+
+.two-book-slide {
+  position: relative;
+  width: 1200px;
+  height: 100%;
+  margin: 0 auto;   
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.two-book-slide .slider-tracks {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.two-book-slide .slider-items {
+  width: 50%; /* Đảm bảo mỗi ảnh chiếm 50% vùng hiển thị */
+  max-width: 50%;
+  box-sizing: border-box;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+
+
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 2rem;
+  color: #3d2e7c;
+  box-shadow: 0 2px 8px #0002;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s;
+}
