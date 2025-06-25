@@ -57,9 +57,6 @@ $book = mysqli_fetch_assoc($result);
         </div>
         <!-- Cột phải: Thông tin sách -->
         <div class="book-detail-right">
-            <?php if (!empty($book['label'])): ?>
-                <div class="book-badge"><?php echo $book['label']; ?></div>
-            <?php endif; ?>
             <h1 class="book-title"><?php echo $book['title']; ?></h1>
             <div class="book-supplier">Nhà cung cấp: <a href="#"><?php echo $book['supplier']; ?></a></div>
             <div class="book-publisher">Nhà xuất bản: <?php echo $book['publisher']; ?></div>

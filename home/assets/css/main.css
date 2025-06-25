@@ -75,25 +75,9 @@ header .container {
   height: 100%;
 } 
 
-header .search-bar {
-  display: flex;
-  flex-grow: 1;
-  max-width: 400px;
-  margin: 0 20px;
-}
+/* This section is now handled by the updated search-bar styles below */
 
-header .search-bar input[type="search"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px 0 0 5px;
-  font-size: 1rem;
-}
-
-.search-bar input[type="search"]:focus {
-  outline: none;
-  border: 1px solid #e74c3c;
-  box-shadow: 0 0 5px rgba(231, 76, 60, 0.3); 
-}
+/* Focus styles are now handled in the updated search-bar section below */
 
 header #logo {
   height: 40px;
@@ -166,6 +150,7 @@ header nav ul li a {
 }
 
 header .search-bar {
+  position: relative;
   display: flex;
   flex-grow: 1;
   max-width: 400px;
@@ -173,25 +158,45 @@ header .search-bar {
 }
 
 header .search-bar input[type="search"] {
-  padding: 10px;
+  width: 100%;
+  padding: 10px 45px 10px 15px;
   border: 1px solid #ccc;
-  border-radius: 5px 0 0 5px;
-  flex-grow: 1;
+  border-radius: 25px;
   font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
 
+header .search-bar input[type="search"]:focus {
+  border-color: var(--danger-color);
+  box-shadow: 0 0 0 2px rgba(215, 0, 24, 0.1);
 }
 
 header .search-bar button {
-  padding: 10px 15px;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 12px;
   border: none;
   background: var(--danger-color);
   color: white;
   cursor: pointer;
-  border-radius: 0 5px 5px 0;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+header .search-bar button:hover {
+  background: #c40016;
 }
 
 header .search-bar button i {
-  font-size: 1rem;
+  font-size: 14px;
 }
 
 
@@ -232,8 +237,8 @@ header .search-bar button i {
   
 
 .main-contain {
-  margin-top: 100px;
-  background-color: #FFA42C;
+  margin-top: 85px;
+  background-color: #F0F0F0;
 }
 
 /* -- Product -- */
@@ -254,7 +259,7 @@ header .search-bar button i {
 
 .product-card {
   width: 220px;
-  background: #fff;
+  background: var(--light-color);
   border-radius: 8px;
   box-shadow: 0 2px 8px #0001;
   padding: 10px;
@@ -480,25 +485,6 @@ footer {
 }
 
 /* --- Responsive Design --- */
-@media (max-width: 992px) {
-  header .search-bar {
-      max-width: 400px;
-  }
-
-  header nav ul li a {
-      padding: 10px;
-  }
-
-  #product-detail-content {
-      grid-template-columns: 1fr;
-      /* Chuyá»•n sang 1 cá»• trÃªn tablet */
-  }
-
-  #product-detail-image {
-      max-width: 100%;
-      margin: 0 auto 20px;
-  }
-}
 .carousel {
 position: relative;
 width: 940px;
@@ -757,9 +743,17 @@ align-items: center;
 
 /* -- Banner -- */
 .item-banner{
-  width: 1200px;
+  margin-top: 20px;
+  width: 100%;
   height: 100%;
+}
+
+.item-banner img{
+  width: 70%;
+  height: 100%;
+  object-fit: cover;
   margin: 0 auto;
+  border-radius: 10px;
 }
 
 .slider-banner {

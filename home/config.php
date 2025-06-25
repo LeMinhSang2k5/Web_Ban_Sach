@@ -29,6 +29,7 @@ if (!function_exists('getNotification')) {
 if (isset($_POST['register'])) {
     $username = $_POST['username'];
     $email = $_POST['email'];
+    $role = 'user';
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     // Sử dụng prepared statement
@@ -45,8 +46,8 @@ if (isset($_POST['register'])) {
             'message' => 'Email đã được sử dụng! Vui lòng chọn email khác.'
         ];
             } else {
-        $stmt = $conn->prepare("INSERT INTO users(username,email,password) VALUES (?,?,?)");
-        $stmt->bind_param("sss", $username, $email, $password);
+        $stmt = $conn->prepare("INSERT INTO users(username, email, password, role) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $username, $email, $password, $role);
         if($stmt->execute()) {
             // Lấy ID của user vừa tạo
             $user_id = $conn->insert_id;

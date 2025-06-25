@@ -13,8 +13,10 @@ require_once __DIR__ . '/../config.php';
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/children.css">
     <link rel="stylesheet" href="assets/css/vanhoc.css">
+    <link rel="stylesheet" href="assets/css/search-autocomplete.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="jquery/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/search-autocomplete.js"></script>
 </head>
 
 <body>
@@ -40,7 +42,7 @@ require_once __DIR__ . '/../config.php';
             </div>
             <div>
                 <form class="search-bar" id="searchForm">
-                    <input type="search" placeholder="Tìm kiếm sách..." aria-label="Tìm kiếm sách" maxlength="128">
+                    <input type="search" placeholder="Tìm kiếm sách..." aria-label="Tìm kiếm sách">
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
@@ -66,17 +68,18 @@ require_once __DIR__ . '/../config.php';
                         </a>
                     </li>
                     <?php if (isLoggedIn()): ?>
-                        <li class="user-account">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user"></i>
-                                <?php echo htmlspecialchars($_SESSION['username']); ?>
-                            </a>
-                            <div class="account-dropdown">
-                                <form action="config.php" method="POST">
-                                    <button type="submit" name="logout" class="logout-btn">Đăng xuất</button>
-                                </form>
-                            </div>
-                        </li>
+                                            <li class="user-account">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <?php echo htmlspecialchars($_SESSION['username']); ?>
+                        </a>
+                        <div class="account-dropdown">
+                            <a href="admin/" class="admin-link" style="display: block; padding: 0.5rem; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">Quản trị Admin</a>
+                            <form action="config.php" method="POST">
+                                <button type="submit" name="logout" class="logout-btn">Đăng xuất</button>
+                            </form>
+                        </div>
+                    </li>
                     <?php else: ?>
                         <li class="btnLogin-popup">
                             <a href="#" class="nav-link">

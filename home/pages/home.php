@@ -62,7 +62,7 @@ function renderBookCard($book)
 
 
 <div class="main-contain">
-    <div class="slider-banner">
+    <!-- <div class="slider-banner">
         <button class="slider-btn prev">&lt;</button>
         <div class="slider-track">
             <div class="slider-item">
@@ -73,56 +73,12 @@ function renderBookCard($book)
             </div>
         </div>
         <button class="slider-btn next">&gt;</button>
-    </div>
+    </div> -->
 
     <div class="item-banner">
         <img src="./assets/img/banner/home/banner-he-1.png" alt="Banner">
     </div>
 
-    <div class="two-book-slide">
-        <button class="slider-btn prev">&lt;</button>
-        <div class="slider-tracks">
-            <div class="slider-items">
-                <a href="index.php?page=bookDetail&id=19">
-                    <img src="./assets/img/home/ho-diep.png">
-                </a>
-            </div>
-            <div class="slider-items">
-                <img src="./assets/img/home/thuy-tram.png">
-            </div>
-            <div class="slider-items">
-                <img src="./assets/img/home/stop-overthinking.png">
-            </div>
-            <div class="slider-items"> 
-                <img src="./assets/img/home/chia-se.png">
-            </div>
-        </div>
-        <button class="slider-btn next">&gt;</button>
-    </div>
-
-    <div class="item-banner">
-        <img src="./assets/img/banner/home/foreign-books.png" alt="Banner">
-    </div>
-
-    <div class="content-product" id="sach-ngoai-ngu">
-        <div class="category-header">
-            <span class="category-icon">
-                <img src="./assets/img/icon/ico_sach.png" alt="icon" />
-            </span>
-            <span class="category-title">Sách Ngoại Ngữ</span>
-        </div>
-        <div class="product-grid">
-            <?php
-            if (mysqli_num_rows($result_ngoai_ngu) > 0) {
-                while ($book = mysqli_fetch_assoc($result_ngoai_ngu)) {
-                    echo renderBookCard($book);
-                }
-            } else {
-                echo '<p>Không có sách bán chạy nào trong database.</p>';
-            }
-            ?>
-        </div>
-    </div>
 
     <div class="item-banner">
         <img src="./assets/img/banner/home/ban-chay.png" alt="Banner">
@@ -148,6 +104,28 @@ function renderBookCard($book)
         </div>
     </div>
 
+    
+    <div class="two-book-slide">
+        <button class="slider-btn prev">&lt;</button>
+        <div class="slider-tracks">
+            <div class="slider-items">
+                <a href="index.php?page=bookDetail&id=19">
+                    <img src="./assets/img/home/ho-diep.png">
+                </a>
+            </div>
+            <div class="slider-items">
+                <img src="./assets/img/home/thuy-tram.png">
+            </div>
+            <div class="slider-items">
+                <img src="./assets/img/home/stop-overthinking.png">
+            </div>
+            <div class="slider-items"> 
+                <img src="./assets/img/home/chia-se.png">
+            </div>
+        </div>
+        <button class="slider-btn next">&gt;</button>
+    </div>
+    
     <div class="item-banner">
         <img src="./assets/img/banner/home/xa-kho.png" alt="Banner">
     </div>
