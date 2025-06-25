@@ -26,7 +26,7 @@ $result_az_vn = mysqli_query($conn, $sql_az_vn);
 $sql_nxb_vanhoc = "SELECT * FROM books WHERE publisher = 'NXB Văn Học' LIMIT 4";
 $result_nxb_vanhoc = mysqli_query($conn, $sql_nxb_vanhoc);
 
-$sql_khoa_hoc = "SELECT * FROM books WHERE category = 'Sach khoa hoc' LIMIT 4";
+$sql_khoa_hoc = "SELECT * FROM books WHERE category = 'Khoa học' LIMIT 4";
 $result_khoa_hoc = mysqli_query($conn, $sql_khoa_hoc);
 
 $sql_kinh_te = "SELECT * FROM books WHERE category = 'Kinh te' LIMIT 4";
@@ -186,7 +186,9 @@ function renderBookCard($book)
     </div>
 
     <div class="item-banner">
-        <img src="./assets/img/banner/home/khoa-hoc.png" alt="Banner">
+        <a href="index.php?page=science">
+            <img src="./assets/img/banner/home/khoa-hoc.png" alt="Banner">
+        </a>
     </div>
 
     <div class="content-product" id="sach-khoa-hoc">
