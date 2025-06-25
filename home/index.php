@@ -48,6 +48,9 @@ include 'db.php';
         case 'literature':
             include 'pages/literatureBook.php';
             break;
+        case "science":
+            include 'pages/scienceBook.php';
+            break;
         case 'checkout':
             include 'pages/checkout.php';
             break;
