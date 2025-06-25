@@ -1,0 +1,69 @@
+.main-content {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #00094A;
+}
+.main-content .banner-container {
+    margin-top: 35px;
+    width: 100%;
+    height: 100%;
+}
+.main-content .item-list {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+.main-content .item-item {
+    width: 230px;
+    height: 230px;
+}
+.item-title-info {
+    width: 1230px;
+    height: 300px;
+    text-align: center; 
+    margin: 0 auto;
+    margin-bottom: 32px;
+}
+.main-content .item-section {
+    background-color: #00094A;
+}
+.main-content .banner-slider {
+    width: 1230px;
+    height: 350px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner-slider .slider-item {
+    width: 1230px;   /* Thay vì 33.3333% */
+    height: 350px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    flex-shrink: 0;
+}
+
+.banner-slider .slider-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.banner-slider .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 2rem;
+    color: #3d2e7c;
+    box-shadow: 0 2px 8px #0002;
+    cursor: pointer;
+    z-index: 2;
+    transition: background 0.2s;
+  }
+
