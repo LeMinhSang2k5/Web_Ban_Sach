@@ -13,6 +13,7 @@ require_once __DIR__ . '/../config.php';
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/children.css">
     <link rel="stylesheet" href="assets/css/vanhoc.css">
+    <link rel="stylesheet" href="assets/css/scienceBook.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="jquery/jquery-3.7.1.min.js"></script>
 </head>
@@ -32,7 +33,7 @@ require_once __DIR__ . '/../config.php';
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="index.php?page=literature">Văn học</a></li>
-                    <li><a href="#">Khoa học</a></li>
+                    <li><a href="index.php?page=science">Khoa học</a></li>
                     <li><a href="index.php?page=children">Thiếu nhi</a></li>
                     <li><a href="#">Lịch sử</a></li>
                     <li><a href="#">Kinh tế</a></li>
