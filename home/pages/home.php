@@ -29,6 +29,9 @@ $result_nxb_vanhoc = mysqli_query($conn, $sql_nxb_vanhoc);
 $sql_khoa_hoc = "SELECT * FROM books WHERE category = 'Sach khoa hoc' LIMIT 4";
 $result_khoa_hoc = mysqli_query($conn, $sql_khoa_hoc);
 
+$sql_kinh_te = "SELECT * FROM books WHERE category = 'Kinh te' LIMIT 4";
+$result_kinh_te = mysqli_query($conn, $sql_kinh_te);
+
 function renderBookCard($book)
 {
     $html = '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
@@ -187,22 +190,35 @@ function renderBookCard($book)
     </div>
 
     <div class="content-product" id="sach-khoa-hoc">
-        <div class="category-header">
-            <span class="category-icon">
-                <img src="./assets/img/icon/ico_sach.png" alt="icon" />
-            </span>
-            <span class="category-title">Sách Khoa Học</span>
+        <div class="reference-product">
+            <div class="reference-tabs">
+                <span class="tab active" data-tab="khoa-hoc">Sách Khoa Học</span>
+                <span class="tab" data-tab="kinh-te">Kinh Tế</span>
+            </div>
         </div>
-        <div class="product-grid">
-            <?php
-            if (mysqli_num_rows($result_khoa_hoc) > 0) {
-                while ($book = mysqli_fetch_assoc($result_khoa_hoc)) {
-                    echo renderBookCard($book);
+        <div class="reference-content">
+            <div class="reference-list reference-list-khoa-hoc product-grid active">
+                <?php
+                if (mysqli_num_rows($result_khoa_hoc) > 0) {
+                    while ($book = mysqli_fetch_assoc($result_khoa_hoc)) {
+                        echo renderBookCard($book);
+                    }
+                } else {
+                    echo '<p>Không có sách bán chạy nào trong database.</p>';
                 }
-            } else {
-                echo '<p>Không có sách bán chạy nào trong database.</p>';
-            }
-            ?>
+                ?>
+            </div>
+            <div class="reference-list reference-list-kinh-te product-grid">
+                <?php
+                if (mysqli_num_rows($result_kinh_te) > 0) {
+                    while ($book = mysqli_fetch_assoc($result_kinh_te)) {
+                        echo renderBookCard($book);
+                    }
+                } else {
+                    echo '<p>Không có sách bán chạy nào trong database.</p>';
+                }
+                ?>
+            </div>
         </div>
     </div>
 
@@ -350,6 +366,7 @@ function renderBookCard($book)
         setupTabSwitching('#sach-thuong-hieu');
         setupTabSwitching('#sach-ngoai-ngu');
         setupTabSwitching('#sach-nha-xuat-ban');
+        setupTabSwitching('#sach-khoa-hoc');
         // Xử lý sách gợi ý
         $('.category-item').click(function () {
             var id = $(this).data('id');

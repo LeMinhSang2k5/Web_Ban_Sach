@@ -1,6 +1,10 @@
 <?php
-$sql_reference = "SELECT * FROM books WHERE category = 'Văn học' AND subcategory = 'Tiểu thuyết'";
+$sql_reference = "SELECT * FROM books WHERE category = 'Văn học' AND subcategory = 'Tiểu thuyết' LIMIT 4";
+$sql_combo = "SELECT * FROM books WHERE category = 'Văn học' AND subcategory = 'Combo văn học' LIMIT 4";
+$sql_new = "SELECT * FROM books WHERE category = 'Văn học' AND subcategory = 'Sách mới sắp phát hành' LIMIT 4";
 $result_reference = mysqli_query($conn, $sql_reference);
+$result_combo = mysqli_query($conn, $sql_combo);
+$result_new = mysqli_query($conn, $sql_new);
 ?>
 
 <body>
@@ -107,6 +111,133 @@ $result_reference = mysqli_query($conn, $sql_reference);
                     </div>
                 </div>
             </div>
+            <div class="item-title">
+                <img src="assets/img/icon/vanhoc/combo.png" alt="">
+            </div>
+            <div class="content-product">
+                <div class="reference-product">
+                    <div class="reference-tabs">
+                        <span class="tab active" data-tab="combo-van-hoc">ComBo Văn Học</span>
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-list reference-list-combo-van-hoc product-grid active">
+                            <?php
+                            if (mysqli_num_rows($result_reference) > 0) {
+                                while ($book = mysqli_fetch_assoc($result_combo)) {
+                                    echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
+                                    echo '<div class="product-card">';
+                                    echo '  <div class="product-image-wrap">';
+                                    if (!empty($book['label'])) {
+                                        echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                                    }
+                                    echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
+                                    echo '  </div>';
+                                    echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
+                                    echo '  <div class="product-price-row">';
+                                    echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
+                                    if (!empty($book['discount'])) {
+                                        echo '    <span class="product-discount">' . $book['discount'] . '</span>';
+                                    }
+                                    echo '  </div>';
+                                    if (!empty($book['old_price'])) {
+                                        echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
+                                    }
+                                    echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
+                                    echo '</div>';
+                                    echo '</a>';
+                                }
+                            } else {
+                                echo '<p>Không có sách tham khảo nào trong database.</p>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-title">
+                <img src="assets/img/icon/vanhoc/sachmoiphathanh.png" alt="">
+            </div>
+            <div class="content-product">
+                <div class="reference-product">
+                    <div class="reference-tabs">
+                        <span class="tab active" data-tab="sach-moi-phathanh">Sách Mới Phát Hành</span>
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-list reference-list-sach-moi-phathanh product-grid active">
+                            <?php
+                            if (mysqli_num_rows($result_new) > 0) {
+                                while ($book = mysqli_fetch_assoc($result_new)) {
+                                    echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
+                                    echo '<div class="product-card">';
+                                    echo '  <div class="product-image-wrap">';
+                                    if (!empty($book['label'])) {
+                                        echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                                    }
+                                    echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
+                                    echo '  </div>';
+                                    echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
+                                    echo '  <div class="product-price-row">';
+                                    echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
+                                    if (!empty($book['discount'])) {
+                                        echo '    <span class="product-discount">' . $book['discount'] . '</span>';
+                                    }
+                                    echo '  </div>';
+                                    if (!empty($book['old_price'])) {
+                                        echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
+                                    }
+                                    echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
+                                    echo '</div>';
+                                    echo '</a>';
+                                }
+                            } else {
+                                echo '<p>Không có sách tham khảo nào trong database.</p>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-title">
+                <img src="assets/img/icon/vanhoc/truyenngan.png" alt="">
+            </div>
+            <div class="content-product">
+                <div class="reference-product">
+                    <div class="reference-tabs">
+                        <span class="tab active" data-tab="truyen-ngan">Truyện Ngắn</span>
+                    </div>
+                    <div class="reference-content">
+                        <div class="reference-list reference-list-truyen-ngan product-grid active">
+                            <?php
+                            if (mysqli_num_rows($result_reference) > 0) {
+                                while ($book = mysqli_fetch_assoc($result_reference)) {
+                                    echo '<a href="index.php?page=bookDetail&id=' . $book['id'] . '" class="product-link">';
+                                    echo '<div class="product-card">';
+                                    echo '  <div class="product-image-wrap">';
+                                    if (!empty($book['label'])) {
+                                        echo '<span class="product-label">' . $book['label'] . '<i class="fa fa-fire"></i></span>';
+                                    }
+                                    echo '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
+                                    echo '  </div>';
+                                    echo '  <h3 class="product-title">' . $book['title'] . '</h3>';
+                                    echo '  <div class="product-price-row">';
+                                    echo '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
+                                    if (!empty($book['discount'])) {
+                                        echo '    <span class="product-discount">' . $book['discount'] . '</span>';
+                                    }
+                                    echo '  </div>';
+                                    if (!empty($book['old_price'])) {
+                                        echo '<div class="product-old-price">' . number_format($book['old_price'], 0, ",", ".") . ' đ</div>';
+                                    }
+                                    echo '<div class="product-sold">Đã bán ' . $book['sold'] . '</div>';
+                                    echo '</div>';
+                                    echo '</a>';
+                                }
+                            } else {
+                                echo '<p>Không có sách tham khảo nào trong database.</p>';
+                            }
+                            ?>
+            </div>
         </div>
+    </div>
     </div>
 </body>
