@@ -28,9 +28,43 @@ if (!$result_luyenthi) {
 
 <body>
     <div class="main-contain">
+        <div class="banner-all">
+            <div class="carousel-wrapper">
+                <button class="banner-btn prev">&lt;</button>
 
-        <div>
-            <img src="./assets/img/banner/banner1.jpg" alt="Banner" id="banner">
+                <div class="book-banner">
+                    <div class="banner-track">
+                        <div class="banner-item1">
+                            <img src="assets/img/banner/banner2.webp" alt="">
+                        </div>
+
+                        <div class="banner-item1">
+                            <img src="assets/img/banner/banner2.webp" alt="">
+                        </div>
+                        <div class="banner-item1">
+                            <img src="assets/img/banner/banner2.webp" alt="">
+                        </div>
+                        <div class="banner-item1">
+                            <img src="assets/img/banner/banner2.webp" alt="">
+                        </div>
+                        <div class="banner-item1">
+                            <img src="assets/img/banner/banner2.webp" alt="">
+                        </div>
+
+                    </div>
+                </div>
+
+                <button class="banner-btn next">&gt;</button>
+            </div>
+
+            <div class="left-banner">
+                <div class="banner-item2">
+                    <img src="assets/img/banner/banner1.webp" alt="">
+                </div>
+                <div class="banner-item3">
+                    <img src="assets/img/banner/banner3.webp" alt="">
+                </div>
+            </div>
         </div>
         <div class="content-product" id="sach-moi">
             <h1>Những cuốn sách nổi bật</h1>
@@ -180,8 +214,8 @@ if (!$result_luyenthi) {
     </div>
 
     <script>
-        $(document).ready(function () {
-            $('.reference-tabs .tab').click(function () {
+        $(document).ready(function() {
+            $('.reference-tabs .tab').click(function() {
                 // Xóa class active của tất cả tab
                 $('.reference-tabs .tab').removeClass('active');
                 // Thêm class active cho tab được click
@@ -193,12 +227,72 @@ if (!$result_luyenthi) {
                 const tabName = $(this).data('tab');
                 $('.reference-list-' + tabName).addClass('active');
             });
-            $('.category-item').click(function () {
+            $('.category-item').click(function() {
                 var id = $(this).data('id');
                 window.location.href = 'index.php?page=bookDetail&id=' + id;
             });
 
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            const $track = $('.banner-track');
+            const $items = $('.banner-item1');
+            const total = $items.length;
+            const realCount = total - 2; // Trừ clone đầu/cuối
+            const itemWidth = $('.book-banner').width();
+            let current = 1; // bắt đầu từ ảnh thật đầu tiên (vị trí 1)
+
+            function updateSlider(animate = true) {
+                const offset = -current * itemWidth;
+                if (animate) {
+                    $track.css({
+                        transform: `translateX(${offset}px)`,
+                        transition: 'transform 0.5s ease'
+                    });
+                } else {
+                    $track.css({
+                        transform: `translateX(${offset}px)`,
+                        transition: 'none'
+                    });
+                }
+            }
+
+            function nextSlide() {
+                current++;
+                updateSlider();
+
+                // Nếu đến clone đầu → nhảy về ảnh thật đầu sau hiệu ứng
+                if (current === total - 1) {
+                    setTimeout(() => {
+                        current = 1;
+                        updateSlider(false);
+                    }, 500); // delay phải khớp transition
+                }
+            }
+
+            function prevSlide() {
+                current--;
+                updateSlider();
+
+                // Nếu đến clone cuối → nhảy về ảnh thật cuối
+                if (current === 0) {
+                    setTimeout(() => {
+                        current = total - 2;
+                        updateSlider(false);
+                    }, 500);
+                }
+            }
+
+            $('.banner-btn.next').click(nextSlide);
+            $('.banner-btn.prev').click(prevSlide);
+
+            setInterval(nextSlide, 4000);
+
+            updateSlider(false); // setup vị trí bắt đầu
+        });
+    </script>
+
 
 </body>
