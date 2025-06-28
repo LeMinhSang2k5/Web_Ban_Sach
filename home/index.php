@@ -1,9 +1,12 @@
 <?php
-// Bật hiển thị lỗi để debug
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Chỉ start session nếu chưa có
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-session_start();
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
 
 $error = [
     'login' => $_SESSION['login_error'] ?? '',
@@ -41,6 +44,15 @@ include 'db.php';
             break;
         case 'cart':
             include 'pages/cart.php';
+            break;
+        case 'literature':
+            include 'pages/literatureBook.php';
+            break;
+        case "science":
+            include 'pages/scienceBook.php';
+            break;
+        case 'checkout':
+            include 'pages/checkout.php';
             break;
         default:
             include 'pages/home.php';

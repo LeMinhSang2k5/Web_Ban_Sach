@@ -1,0 +1,28 @@
+.item-sections {
+    width: 100%;
+    background: #FFBA76;
+    padding: 32px 0;
+    text-align: center; 
+    margin: 0 auto;
+}
+.item-list {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 32px;
+}
+.book-list-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.item-books img {
+    padding-top: 10px;
+    height: 500px;
+    width: 400px;
+}
+.productt{
+    max-height: 400px;
+    min-width: 1280px;
+}

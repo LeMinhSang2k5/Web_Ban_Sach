@@ -1,41 +1,8 @@
 <?php
 include 'config.php';
 
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Log the session data
-error_log("Session data: " . print_r($_SESSION, true));
-
-// Kiểm tra đăng nhập
-if (!isLoggedIn()) {
-    header("Location: index.php");
-    exit();
-}
-
-// Hàm lấy thông tin chi tiết của sách
-function getBookDetails($book_ids, $conn) {
-    if (empty($book_ids)) {
-        return [];
-    }
-    
-    $ids = implode(',', array_map('intval', $book_ids));
-    $sql = "SELECT id, title, price, image, author, publisher, discount, old_price 
-            FROM books 
-            WHERE id IN ($ids)";
-    
-    error_log("SQL Query: " . $sql);
-    $result = $conn->query($sql);
-    $books = [];
-    
-    while ($row = $result->fetch_assoc()) {
-        error_log("Book from DB - ID: " . $row['id'] . ", Title: " . $row['title']);
-        $books[$row['id']] = $row;
-    }
-    
-    return $books;
-}
+// Khởi tạo biến giỏ hàng
+$cart_items = [];
 
 // Lấy giỏ hàng từ database nếu đã đăng nhập
 if (isset($_SESSION['user_id'])) {
@@ -43,76 +10,44 @@ if (isset($_SESSION['user_id'])) {
     
     // Lấy giỏ hàng active của user
     $stmt = $conn->prepare("
-        SELECT c.id as cart_id, ci.book_id, ci.quantity, ci.price
+        SELECT c.id as cart_id, ci.book_id, ci.quantity, ci.price,
+               b.title, b.image, b.author, b.publisher, b.discount, b.old_price
         FROM cart c
         JOIN cart_items ci ON c.id = ci.cart_id
+        JOIN books b ON ci.book_id = b.id
         WHERE c.user_id = ? AND c.status = 'active'
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     
-    $cart_items = [];
-    $book_ids = [];
-    
     while ($row = $result->fetch_assoc()) {
-        $book_ids[] = $row['book_id'];
-        $cart_items[$row['book_id']] = $row; // Sử dụng book_id làm key
+        $cart_items[] = [
+            'book_id' => $row['book_id'],
+            'title' => $row['title'],
+            'price' => $row['price'],
+            'image' => $row['image'],
+            'author' => $row['author'],
+            'publisher' => $row['publisher'],
+            'discount' => $row['discount'],
+            'old_price' => $row['old_price'],
+            'quantity' => $row['quantity']
+        ];
     }
-    
-    // Lấy thông tin chi tiết của các sách
-    $books = getBookDetails($book_ids, $conn);
-    
-    // Kết hợp thông tin sách với số lượng trong giỏ hàng
-    foreach ($books as $book_id => $book) {
-        if (isset($cart_items[$book_id])) {
-            $cart_items[$book_id] = array_merge($cart_items[$book_id], $book);
-        }
-    }
-    
-    // Chuyển đổi mảng kết hợp thành mảng tuần tự
-    $cart_items = array_values($cart_items);
 } else {
     // Nếu chưa đăng nhập, lấy từ session
     $cart_items = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+    // Đảm bảo consistency trong field name
     if (!empty($cart_items)) {
-        // Chuyển đổi 'id' thành 'book_id' cho nhất quán
         foreach ($cart_items as &$item) {
             if (isset($item['id']) && !isset($item['book_id'])) {
                 $item['book_id'] = $item['id'];
-                unset($item['id']);
             }
         }
-        
-        $book_ids = array_column($cart_items, 'book_id');
-        $books = getBookDetails($book_ids, $conn);
-        
-        // Tạo mảng tạm để lưu trữ các item đã xử lý
-        $processed_items = [];
-        foreach ($cart_items as $item) {
-            $book_id = $item['book_id'];
-            if (isset($books[$book_id]) && !isset($processed_items[$book_id])) {
-                $processed_items[$book_id] = array_merge($item, $books[$book_id]);
-            }
-        }
-        
-        // Chuyển đổi mảng kết hợp thành mảng tuần tự
-        $cart_items = array_values($processed_items);
+        // ✅ QUAN TRỌNG: Xóa tham chiếu để tránh bug trùng lặp
+        unset($item);
     }
 }
-
-// Kiểm tra xem có bị trùng book_id không
-$seen_book_ids = [];
-foreach ($cart_items as $item) {
-    $book_id = $item['book_id'];
-    if (in_array($book_id, $seen_book_ids)) {
-        error_log("DUPLICATE FOUND - Book ID: " . $book_id);
-    } else {
-        $seen_book_ids[] = $book_id;
-    }
-}
-
-error_log("Unique book IDs in cart: " . implode(", ", $seen_book_ids));
 ?>
 
 <link rel="stylesheet" href="assets/css/cart.css">
@@ -124,7 +59,7 @@ error_log("Unique book IDs in cart: " . implode(", ", $seen_book_ids));
 
     <?php if (!isLoggedIn()): ?>
     <div class="login-notice">
-        <p>Vui lòng <a href="#" class="btnLogin-popup">đăng nhập</a> để lưu giỏ hàng của bạn!</p>
+        <p>Bạn có thể <a href="#" class="btnLogin-popup">đăng nhập</a> để lưu giỏ hàng hoặc tiếp tục mua hàng với thông tin cá nhân!</p>
     </div>
     <?php endif; ?>
 
@@ -133,6 +68,11 @@ error_log("Unique book IDs in cart: " . implode(", ", $seen_book_ids));
             <div class="select-all">
                 <input type="checkbox" id="select-all-items">
                 <label for="select-all-items">Chọn tất cả</label>
+            </div>
+            <div class="cart-actions">
+                <button class="clear-cart-btn" onclick="clearCart()">
+                    <i class="fas fa-trash-alt"></i> Xóa toàn bộ giỏ hàng
+                </button>
             </div>
             <div class="cart-columns">
                 <div>Sản phẩm</div>
@@ -144,11 +84,7 @@ error_log("Unique book IDs in cart: " . implode(", ", $seen_book_ids));
 
         <div class="cart-items">
             <?php foreach ($cart_items as $item): ?>
-                <?php
-                // Debug: In ra thông tin từng item
-                error_log("Rendering item: " . print_r($item, true));
-                ?>
-                <div class="cart-item" data-id="<?php echo htmlspecialchars($item['book_id']); ?>">
+                <div class="cart-item" data-id="<?php echo htmlspecialchars($item['book_id']); ?>" data-price="<?php echo $item['price']; ?>">
                     <div class="item-checkbox-container">
                         <input type="checkbox" class="item-checkbox">
                     </div>
@@ -203,14 +139,7 @@ error_log("Unique book IDs in cart: " . implode(", ", $seen_book_ids));
                 </div>
 
                 <div class="promotion-card">
-                    <div class="promotion-title">Mã Giảm 10K - Toàn Sản Phẩm</div>
-                    <div class="promotion-desc">Đơn hàng từ 130k - Không áp dụng cho sách ngoại văn</div>
-                    <div class="promotion-expiry">HSD: 30/06/2025</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="buy-more-info">Mua thêm 130.000đ để nhận mã</div>
-                    <a href="index.php" class="buy-more">Mua thêm</a>
+                    <div class="promotion-title">Đang cập nhật</div>
                 </div>
             </div>
 
@@ -230,9 +159,6 @@ error_log("Unique book IDs in cart: " . implode(", ", $seen_book_ids));
             <button class="checkout-btn" onclick="proceedToCheckout()">
                 <i class="fas fa-shopping-cart"></i> TIẾN HÀNH ĐẶT HÀNG
             </button>
-            <div class="terms">
-                <a href="#">Xem điều khoản và điều kiện mua hàng</a>
-            </div>
         </div>
     <?php else: ?>
         <div class="empty-cart">
@@ -250,17 +176,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectAllCheckbox = document.getElementById('select-all-items');
     const itemCheckboxes = document.querySelectorAll('.item-checkbox');
 
-    selectAllCheckbox.addEventListener('change', function() {
-        itemCheckboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function() {
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateTotal();
         });
-        updateTotal();
-    });
+    }
 
-    // Xử lý số lượng
+    // Auto-check all items and add event listeners
     itemCheckboxes.forEach(checkbox => {
+        checkbox.checked = true;
         checkbox.addEventListener('change', updateTotal);
     });
+    
+    if (selectAllCheckbox && itemCheckboxes.length > 0) {
+        selectAllCheckbox.checked = true;
+    }
+    
+    updateTotal();
 });
 
 function updateQuantity(element, change) {
@@ -273,7 +208,6 @@ function updateQuantity(element, change) {
     const cartItem = element.closest('.cart-item');
     const bookId = cartItem.dataset.id;
     
-    // Gửi request cập nhật số lượng
     fetch('pages/update_cart.php', {
         method: 'POST',
         headers: {
@@ -286,10 +220,18 @@ function updateQuantity(element, change) {
         if (data.success) {
             input.value = newValue;
             
-            // Cập nhật thành tiền
-            const price = parseFloat(cartItem.querySelector('.cart-item-price').textContent.replace(/[^\d]/g, ''));
+            const price = parseFloat(cartItem.dataset.price);
             const subtotal = price * newValue;
+            
             cartItem.querySelector('.cart-item-subtotal').textContent = new Intl.NumberFormat('vi-VN').format(subtotal) + 'đ';
+            
+            // Update cart counter if available
+            if (data.total_items !== undefined) {
+                const cartCount = document.getElementById('cart-count');
+                if (cartCount) {
+                    cartCount.textContent = data.total_items;
+                }
+            }
             
             updateTotal();
         } else {
@@ -321,23 +263,20 @@ function removeFromCart(button) {
             cartItem.remove();
             updateTotal();
             
-            // Cập nhật số lượng sản phẩm trong tiêu đề
+            // Update cart counter if available
+            if (data.total_items !== undefined) {
+                const cartCount = document.getElementById('cart-count');
+                if (cartCount) {
+                    cartCount.textContent = data.total_items;
+                }
+            }
+            
             const cartTitle = document.querySelector('.cart-title');
             const itemCount = document.querySelectorAll('.cart-item').length;
-            cartTitle.textContent = `GIỎ HÀNG (${itemCount} sản phẩm)`;
+            cartTitle.innerHTML = `<i class="fas fa-shopping-cart"></i> GIỎ HÀNG CỦA BẠN (${itemCount} sản phẩm)`;
             
-            // Hiển thị giỏ hàng trống nếu không còn sản phẩm
             if (itemCount === 0) {
-                const cartItems = document.querySelector('.cart-items');
-                cartItems.innerHTML = `
-                    <div class="empty-cart">
-                        <p>Giỏ hàng của bạn đang trống</p>
-                        <a href="index.php" class="continue-shopping">Tiếp tục mua sắm</a>
-                    </div>
-                `;
-                
-                // Ẩn phần tổng tiền và nút đặt hàng
-                document.querySelector('.cart-summary').style.display = 'none';
+                location.reload(); // Reload to show empty cart message
             }
         } else {
             alert(data.message || 'Có lỗi xảy ra khi xóa sản phẩm');
@@ -355,13 +294,46 @@ function updateTotal() {
     
     cartItems.forEach(item => {
         const checkbox = item.querySelector('.item-checkbox');
-        if (checkbox.checked) {
-            const subtotal = parseFloat(item.querySelector('.cart-item-subtotal').textContent.replace(/[^\d]/g, ''));
-            total += subtotal;
+        if (checkbox && checkbox.checked) {
+            const price = parseFloat(item.dataset.price);
+            const quantity = parseInt(item.querySelector('.quantity-input').value);
+            total += price * quantity;
         }
     });
     
     document.querySelector('.total-amount').textContent = new Intl.NumberFormat('vi-VN').format(total) + 'đ';
+}
+
+function clearCart() {
+    if (!confirm('Bạn có chắc muốn xóa toàn bộ giỏ hàng? Hành động này không thể hoàn tác!')) {
+        return;
+    }
+    
+    fetch('pages/clear_cart.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update cart counter
+            const cartCount = document.getElementById('cart-count');
+            if (cartCount) {
+                cartCount.textContent = '0';
+            }
+            
+            // Reload page to show empty cart
+            location.reload();
+        } else {
+            alert(data.message || 'Có lỗi xảy ra khi xóa giỏ hàng');
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+        alert('Có lỗi xảy ra khi xóa giỏ hàng');
+    });
 }
 
 function proceedToCheckout() {
@@ -371,7 +343,6 @@ function proceedToCheckout() {
         return;
     }
     
-    // TODO: Chuyển đến trang thanh toán
-    window.location.href = 'checkout.php';
+    window.location.href = 'index.php?page=checkout';
 }
 </script>
