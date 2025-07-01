@@ -47,7 +47,9 @@ if ($order_code !== '') {
         </div>
     </form>
     <?php if ($error): ?>
-        <div class="error-messages"><p class="error"><?php echo $error; ?></p></div>
+        <div class="error-messages">
+            <p class="error"><?php echo $error; ?></p>
+        </div>
     <?php endif; ?>
     <?php if ($order): ?>
         <div class="order-summary">
