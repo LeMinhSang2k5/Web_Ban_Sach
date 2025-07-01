@@ -34,8 +34,8 @@ include 'db.php';
 
 <?php include 'includes/header.php'; ?>
 <main>
-    <?php 
-    switch($page) {
+    <?php
+    switch ($page) {
         case 'children':
             include 'pages/chilldrenBook.php';
             break;
@@ -64,5 +64,3 @@ include 'db.php';
     ?>
 </main>
 <?php include 'includes/footer.php'; ?>
-
-
