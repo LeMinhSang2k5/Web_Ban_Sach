@@ -52,7 +52,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <a href="manage-books.php" class="action-btn <?php echo $current_page == 'manage-books' ? 'active' : ''; ?>">
                     <i class="fas fa-book"></i> Quản lý sách
                 </a>
-                <a href="add_book.php" class="action-btn <?php echo $current_page == 'add_book' ? 'active' : ''; ?>">
+                <a href="add-book.php" class="action-btn <?php echo $current_page == 'add-book' ? 'active' : ''; ?>">
                     <i class="fas fa-plus"></i> Thêm sách mới
                 </a>
                 <a href="ManageUser.php" class="action-btn <?php echo $current_page == 'ManageUser' ? 'active' : ''; ?>">

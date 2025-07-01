@@ -54,6 +54,9 @@ include 'db.php';
         case 'checkout':
             include 'pages/checkout.php';
             break;
+        case 'order_tracking':
+            include 'pages/order_tracking.php';
+            break;
         default:
             include 'pages/home.php';
             break;

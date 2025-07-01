@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include 'config.php';
 
 // Khởi tạo biến giỏ hàng
@@ -342,7 +343,15 @@ function proceedToCheckout() {
         alert('Vui lòng chọn ít nhất một sản phẩm để đặt hàng');
         return;
     }
-    
-    window.location.href = 'index.php?page=checkout';
+    // Lấy danh sách book_id
+    const bookIds = Array.from(selectedItems).map(cb => cb.closest('.cart-item').dataset.id);
+    // Gửi qua fetch POST để lưu vào session
+    fetch('pages/prepare_checkout.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'selected_items=' + JSON.stringify(bookIds)
+    }).then(() => {
+        window.location.href = 'index.php?page=checkout';
+    });
 }
 </script>

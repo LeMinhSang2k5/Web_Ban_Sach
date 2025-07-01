@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../config.php';
 ?>
 <!DOCTYPE html>
@@ -69,7 +70,7 @@ require_once __DIR__ . '/../config.php';
                         </a>
                     </li>
                     <?php if (isLoggedIn()): ?>
-                                            <li class="user-account">
+                    <li class="user-account">
                         <a href="#" class="nav-link">
                             <i class="fas fa-user"></i>
                             <?php echo htmlspecialchars($_SESSION['username']); ?>
@@ -79,6 +80,7 @@ require_once __DIR__ . '/../config.php';
                             <form action="config.php" method="POST">
                                 <button type="submit" name="logout" class="logout-btn">Đăng xuất</button>
                             </form>
+                            <a href="index.php?page=order_tracking" class="nav-link">Đơn hàng</a>
                         </div>
                     </li>
                     <?php else: ?>

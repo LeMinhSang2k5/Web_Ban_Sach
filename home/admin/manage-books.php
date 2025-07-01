@@ -127,7 +127,7 @@ ob_start();
                             <td><?php echo $book['stock']; ?></td>
                             <td>
                                 <div class="book-actions">
-                                    <a href="edit_book.php?id=<?php echo $book['id']; ?>" 
+                                    <a href="edit-book.php?id=<?php echo $book['id']; ?>" 
                                        class="btn btn-success">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>

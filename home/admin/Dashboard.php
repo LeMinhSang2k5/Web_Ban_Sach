@@ -26,7 +26,7 @@ if ($order_check->num_rows > 0) {
     $stats['total_orders'] = $orders_result->fetch_assoc()['total'];
     
     // Tính tổng doanh thu
-    $revenue_result = $conn->query("SELECT SUM(total_amount) as revenue FROM orders WHERE status = 'completed'");
+    $revenue_result = $conn->query("SELECT SUM(total_amount) as revenue FROM orders WHERE order_status = 'completed'");
     $stats['total_revenue'] = $revenue_result->fetch_assoc()['revenue'] ?? 0;
 } else {
     $stats['total_orders'] = 0;

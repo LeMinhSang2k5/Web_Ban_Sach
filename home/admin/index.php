@@ -4,7 +4,7 @@ require_once('../db.php');
 
 // Kiểm tra nếu admin đã đăng nhập
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    header("Location: dashboard.php");
+    header("Location: Dashboard.php");
     exit();
 }
 
@@ -26,7 +26,7 @@ if (isset($_POST['login'])) {
             $_SESSION['admin_username'] = $admin['username'];
             $_SESSION['admin_email'] = $admin['email'];
             
-            header("Location: dashboard.php");
+            header("Location: Dashboard.php");
             exit();
         } else {
             $error = "Mật khẩu không chính xác!";

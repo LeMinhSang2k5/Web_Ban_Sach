@@ -48,7 +48,7 @@ $book = mysqli_fetch_assoc($result);
                 <div class="more-thumbnails">+5</div>
             </div>
             <button class="add-to-cart" onclick="addToCart(<?php echo $book['id']; ?>)">Thêm vào giỏ hàng</button>
-            <button class="buy-now">Mua ngay</button>
+            <button class="buy-now" onclick="buyNow(<?php echo $book['id']; ?>)">Mua ngay</button>
             <div class="policy-list">
                 <p>Thời gian giao hàng: Giao nhanh và uy tín</p>
                 <p>Chính sách đổi trả: Đổi trả miễn phí toàn quốc</p>
@@ -150,22 +150,42 @@ $book = mysqli_fetch_assoc($result);
         <div class="book-rating-score">
             <span class="score">0</span><span class="score-max">/5</span>
             <div class="book-rating-star-list">
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
             </div>
             <div class="book-rating-count">
                 (0 đánh giá)
             </div>
         </div>
         <div class="book-rating-bar-list">
-            <div class="bar-row"><span>5 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
-            <div class="bar-row"><span>4 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
-            <div class="bar-row"><span>3 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
-            <div class="bar-row"><span>2 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
-            <div class="bar-row"><span>1 sao</span><div class="bar"><div class="bar-inner" style="width:0%"></div></div><span>0%</span></div>
+            <div class="bar-row"><span>5 sao</span>
+                <div class="bar">
+                    <div class="bar-inner" style="width:0%"></div>
+                </div><span>0%</span>
+            </div>
+            <div class="bar-row"><span>4 sao</span>
+                <div class="bar">
+                    <div class="bar-inner" style="width:0%"></div>
+                </div><span>0%</span>
+            </div>
+            <div class="bar-row"><span>3 sao</span>
+                <div class="bar">
+                    <div class="bar-inner" style="width:0%"></div>
+                </div><span>0%</span>
+            </div>
+            <div class="bar-row"><span>2 sao</span>
+                <div class="bar">
+                    <div class="bar-inner" style="width:0%"></div>
+                </div><span>0%</span>
+            </div>
+            <div class="bar-row"><span>1 sao</span>
+                <div class="bar">
+                    <div class="bar-inner" style="width:0%"></div>
+                </div><span>0%</span>
+            </div>
         </div>
         <div class="book-rating-note">
             Chỉ có thành viên mới có thể viết nhận xét. Vui lòng <a href="#">đăng nhập</a> hoặc <a href="#">đăng ký</a>.
@@ -198,24 +218,24 @@ $book = mysqli_fetch_assoc($result);
             // Tạo overlay
             var overlay = document.createElement('div');
             overlay.className = 'img-overlay';
-            
+
             // Tạo ảnh lớn
             var img = document.createElement('img');
             img.src = src;
-            img.onclick = function(e) { e.stopPropagation(); }; // Ngăn đóng khi click vào ảnh
-            
+            img.onclick = function (e) { e.stopPropagation(); }; // Ngăn đóng khi click vào ảnh
+
             // Hiệu ứng đóng smooth
             function closeOverlay() {
                 overlay.classList.add('closing');
-                setTimeout(function() {
+                setTimeout(function () {
                     if (overlay && overlay.parentNode) {
                         document.body.removeChild(overlay);
                     }
                 }, 300);
             }
-            
+
             overlay.onclick = closeOverlay;
-            
+
             // Đóng bằng phím ESC
             function handleKeyPress(e) {
                 if (e.key === 'Escape') {
@@ -224,25 +244,54 @@ $book = mysqli_fetch_assoc($result);
                 }
             }
             document.addEventListener('keydown', handleKeyPress);
-            
+
             overlay.appendChild(img);
             document.body.appendChild(overlay);
-            
+
             // Ngăn cuộn trang khi overlay mở
             document.body.style.overflow = 'hidden';
-            
+
             // Khôi phục cuộn trang khi đóng
-            overlay.addEventListener('animationend', function(e) {
+            overlay.addEventListener('animationend', function (e) {
                 if (e.animationName === 'fadeOut') {
                     document.body.style.overflow = '';
                 }
             });
         }
 
+        function buyNow(bookId) {
+            // Lấy số lượng từ input
+            const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
+
+            // Gửi request đến server để thêm vào giỏ hàng
+            fetch('pages/add_to_cart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'book_id=' + bookId + '&quantity=' + quantity
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Sau khi thêm vào giỏ hàng, lưu bookId vào session checkout_items
+                        fetch('pages/prepare_checkout.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: 'selected_items=' + JSON.stringify([bookId])
+                        }).then(() => {
+                            window.location.href = 'index.php?page=checkout';
+                        });
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
+                    }
+                });
+        }
+
         function addToCart(bookId) {
             // Lấy số lượng từ input
             const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
-            
+
             // Gửi request đến server
             fetch('pages/add_to_cart.php', {
                 method: 'POST',
@@ -251,15 +300,15 @@ $book = mysqli_fetch_assoc($result);
                 },
                 body: 'book_id=' + bookId + '&quantity=' + quantity
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Server response:', data);
-                if (data.success) {
-                    alert('Đã thêm sách vào giỏ hàng thành công!');
-                } else {
-                    alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
-                }
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Server response:', data);
+                    if (data.success) {
+                        alert('Đã thêm sách vào giỏ hàng thành công!');
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
+                    }
+                });
         }
     </script>
 
