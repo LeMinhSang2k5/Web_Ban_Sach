@@ -1,6 +1,6 @@
 <?php
 ob_start();
-require_once '../config.php';
+include 'config.php';
 
 // ===== Helper Functions =====
 function validateOrder($post, $cart_items) {
