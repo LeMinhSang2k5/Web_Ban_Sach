@@ -54,6 +54,9 @@ include 'db.php';
         case 'checkout':
             include 'pages/checkout.php';
             break;
+        case 'category':
+            include 'pages/category.php';
+            break;
         default:
             include 'pages/home.php';
             break;

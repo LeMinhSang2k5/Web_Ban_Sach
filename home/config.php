@@ -84,12 +84,12 @@ if (isset($_POST['register'])) {
 }
 
 if (isset($_POST['login'])) {
-    $email = trim($_POST['email']);
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
 
     // Sử dụng prepared statement để tránh SQL injection
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
     
@@ -209,5 +209,28 @@ if (isset($_POST['logout'])) {
     ];
     header("location: index.php");
     exit();
+}
+
+// Hàm kiểm tra quyền admin
+if (!function_exists('isAdmin')) {
+    function isAdmin($user_id) {
+        global $conn;
+        
+        if (empty($user_id)) {
+            return false;
+        }
+        
+        $stmt = $conn->prepare("SELECT role FROM users WHERE id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            return $user['role'] === 'admin';
+        }
+        
+        return false;
+    }
 }
 ?>

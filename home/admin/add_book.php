@@ -64,7 +64,7 @@ ob_start();
         <i class="fas fa-plus"></i> Thêm sách mới
     </h1>
     <div class="page-actions">
-        <a href="manage-books.php" class="btn btn-secondary">
+        <a href="manage_books.php" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Quay lại danh sách
         </a>
     </div>

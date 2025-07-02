@@ -2,14 +2,14 @@
 require_once('auth_check.php');
 require_once('../db.php');
 
-// Kiểm tra xác thực admin
-checkAdminAuth();
+// Kiểm tra xác thực admin - đã được check trong index.php
+// checkAdminAuth();
 
 // Lấy thông tin admin
 $admin = getCurrentAdmin();
 
-// Lấy page hiện tại để highlight menu
-$current_page = basename($_SERVER['PHP_SELF'], '.php');
+// Lấy page hiện tại từ URL parameter để highlight menu
+$current_page = $_GET['page'] ?? 'dashboard';
 ?>
 
 <!DOCTYPE html>
@@ -46,25 +46,25 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         <div class="sidebar" id="sidebar">
 
             <div class="actions-grid">
-                <a href="Dashboard.php" class="action-btn <?php echo $current_page == 'Dashboard' ? 'active' : ''; ?>">
+                <a href="index.php?page=dashboard" class="action-btn <?php echo $current_page == 'dashboard' ? 'active' : ''; ?>">
                     <i class="fas fa-home"></i> Dashboard
                 </a>
-                <a href="manage-books.php" class="action-btn <?php echo $current_page == 'manage-books' ? 'active' : ''; ?>">
+                <a href="index.php?page=manage_books" class="action-btn <?php echo $current_page == 'manage_books' ? 'active' : ''; ?>">
                     <i class="fas fa-book"></i> Quản lý sách
                 </a>
-                <a href="add_book.php" class="action-btn <?php echo $current_page == 'add_book' ? 'active' : ''; ?>">
+                <a href="index.php?page=add_book" class="action-btn <?php echo $current_page == 'add_book' ? 'active' : ''; ?>">
                     <i class="fas fa-plus"></i> Thêm sách mới
                 </a>
-                <a href="ManageUser.php" class="action-btn <?php echo $current_page == 'ManageUser' ? 'active' : ''; ?>">
+                <a href="index.php?page=manage_user" class="action-btn <?php echo $current_page == 'manage_user' ? 'active' : ''; ?>">
                     <i class="fas fa-users"></i> Quản lý người dùng
                 </a>
-                <a href="orders.php" class="action-btn <?php echo $current_page == 'orders' ? 'active' : ''; ?>">
+                <a href="index.php?page=orders" class="action-btn <?php echo $current_page == 'orders' ? 'active' : ''; ?>">
                     <i class="fas fa-shopping-cart"></i> Quản lý đơn hàng
                 </a>
-                <a href="categories.php" class="action-btn <?php echo $current_page == 'categories' ? 'active' : ''; ?>">
+                <a href="index.php?page=manage_categories" class="action-btn <?php echo $current_page == 'manage_categories' ? 'active' : ''; ?>">
                     <i class="fas fa-tags"></i> Quản lý danh mục
                 </a>
-                <a href="reports.php" class="action-btn <?php echo $current_page == 'reports' ? 'active' : ''; ?>">
+                <a href="index.php?page=reports" class="action-btn <?php echo $current_page == 'reports' ? 'active' : ''; ?>">
                     <i class="fas fa-chart-bar"></i> Báo cáo
                 </a>
                 <a href="../index.php" class="action-btn" style="margin-top: 1rem; background: linear-gradient(135deg, #6c757d 0%, #495057 100%);">
@@ -80,22 +80,34 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
     </div>
 
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
-        }
+    // Toggle sidebar on mobile
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    }
 
-        // Đóng sidebar khi click outside trên mobile
-        document.addEventListener('click', function(e) {
-            const sidebar = document.getElementById('sidebar');
-            const toggle = document.querySelector('.sidebar-toggle');
-            
-            if (window.innerWidth <= 1024 && 
-                !sidebar.contains(e.target) && 
-                !toggle.contains(e.target)) {
-                sidebar.classList.remove('open');
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.querySelector('.sidebar-toggle');
+        
+        if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
+            sidebar.classList.remove('active');
+        }
+    });
+
+    // Add active class to current page
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPage = '<?php echo $current_page; ?>';
+        const menuItems = document.querySelectorAll('.action-btn');
+        
+        menuItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && href.includes('page=' + currentPage)) {
+                item.classList.add('active');
             }
         });
+    });
     </script>
 </body>
 </html> 

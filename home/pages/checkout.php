@@ -34,6 +34,8 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 
+
+
 // Xử lý đặt hàng
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $customer_name = trim($_POST['customer_name']);

@@ -15,6 +15,7 @@ require_once __DIR__ . '/../config.php';
     <link rel="stylesheet" href="assets/css/vanhoc.css">
     <link rel="stylesheet" href="assets/css/scienceBook.css">
     <link rel="stylesheet" href="assets/css/search-autocomplete.css">
+    <link rel="stylesheet" href="assets/css/category.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="jquery/jquery-3.7.1.min.js"></script>
     <script src="assets/js/search-autocomplete.js"></script>
@@ -75,7 +76,9 @@ require_once __DIR__ . '/../config.php';
                             <?php echo htmlspecialchars($_SESSION['username']); ?>
                         </a>
                         <div class="account-dropdown">
+                            <?php if (isAdmin($_SESSION['user_id'])): ?>
                             <a href="admin/" class="admin-link" style="display: block; padding: 0.5rem; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">Quản trị Admin</a>
+                            <?php endif; ?>
                             <form action="config.php" method="POST">
                                 <button type="submit" name="logout" class="logout-btn">Đăng xuất</button>
                             </form>
@@ -101,8 +104,8 @@ require_once __DIR__ . '/../config.php';
                 <form action="config.php" method="POST">
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" name="email" required>
-                        <label>Email</label>
+                        <input type="text" name="username" required>
+                        <label>Tên đăng nhập</label>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class="fa-solid fa-lock"></i></span>
@@ -110,9 +113,9 @@ require_once __DIR__ . '/../config.php';
                         <label>Mật khẩu</label>
                     </div>
                     <div class="remember-forgot">
-                        <label><input type="checkbox">
+                        <label><input type="checkbox" name="remember_me" value="1">
                             Ghi nhớ đăng nhập</label>
-                        <a href="#">Quên mật khẩu?</a>
+                        <a href="index.php?page=forgot-password" class="forgot-password-link">Quên mật khẩu?</a>
                     </div>
                     <button type="submit" class="btnn" name="login">Đăng Nhập</button>
                     <div class="login-register">

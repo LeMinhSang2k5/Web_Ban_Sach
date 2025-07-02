@@ -122,7 +122,7 @@ ob_start();
                 </table>
             </div>
             <div style="text-align: center; margin-top: 1rem;">
-                <a href="ManageUser.php" class="btn btn-primary">
+                <a href="index.php?page=manage_user" class="btn btn-primary">
                     <i class="fas fa-users"></i> Xem tất cả
                 </a>
             </div>
@@ -172,7 +172,7 @@ ob_start();
                 </table>
             </div>
             <div style="text-align: center; margin-top: 1rem;">
-                <a href="ManageBooks.php" class="btn btn-primary">
+                <a href="index.php?page=manage-books" class="btn btn-primary">
                     <i class="fas fa-book"></i> Xem tất cả sách
                 </a>
             </div>

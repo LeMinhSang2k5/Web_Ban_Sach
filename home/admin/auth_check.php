@@ -1,24 +1,54 @@
 <?php
-session_start();
+// Đảm bảo session đã được start
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Kiểm tra xem admin đã đăng nhập chưa
+// Include config để có function isAdmin()
+require_once('../config.php');
+
+// Kiểm tra xem user đã đăng nhập và có quyền admin chưa
 function checkAdminAuth() {
-    if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-        header("Location: index.php");
+    // Kiểm tra đăng nhập
+    if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
+        $_SESSION['notification'] = [
+            'type' => 'error',
+            'message' => 'Vui lòng đăng nhập để truy cập trang quản trị!'
+        ];
+        header("Location: ../index.php");
+        exit();
+    }
+    
+    // Kiểm tra quyền admin
+    if (!isAdmin($_SESSION['user_id'])) {
+        $_SESSION['notification'] = [
+            'type' => 'error',  
+            'message' => 'Bạn không có quyền truy cập trang quản trị!'
+        ];
+        header("Location: ../index.php");
         exit();
     }
 }
 
-// Hàm đăng xuất admin
+// Hàm đăng xuất admin (chuyển về trang chính)
 function adminLogout() {
-    // Xóa tất cả session admin
-    unset($_SESSION['admin_logged_in']);
-    unset($_SESSION['admin_id']);
-    unset($_SESSION['admin_username']);
-    unset($_SESSION['admin_email']);
+    $username = $_SESSION['username'];
     
-    // Chuyển hướng về trang login
-    header("Location: index.php");
+    // Backup cart trước khi logout nếu có
+    $temp_cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+    
+    // Chỉ unset các session của user, giữ lại cart
+    unset($_SESSION['username'], $_SESSION['email'], $_SESSION['user_id']);
+    
+    // Khôi phục cart
+    $_SESSION['cart'] = $temp_cart;
+    
+    $_SESSION['notification'] = [
+        'type' => 'success',
+        'message' => 'Admin đã đăng xuất thành công! Tạm biệt ' . $username
+    ];
+    
+    header("Location: ../index.php");
     exit();
 }
 
@@ -29,11 +59,11 @@ if (isset($_POST['logout'])) {
 
 // Hàm lấy thông tin admin hiện tại
 function getCurrentAdmin() {
-    if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+    if (isset($_SESSION['user_id']) && isAdmin($_SESSION['user_id'])) {
         return [
-            'id' => $_SESSION['admin_id'],
-            'username' => $_SESSION['admin_username'],
-            'email' => $_SESSION['admin_email']
+            'id' => $_SESSION['user_id'],
+            'username' => $_SESSION['username'],
+            'email' => $_SESSION['email']
         ];
     }
     return null;

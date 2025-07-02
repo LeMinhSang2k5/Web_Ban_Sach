@@ -19,6 +19,8 @@ if (isset($_POST['delete_book'])) {
 // Lấy danh sách sách
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+// Ensure page is always at least 1
+$page = max(1, $page);
 $limit = 10;
 $offset = ($page - 1) * $limit;
 
@@ -52,7 +54,7 @@ ob_start();
                 <i class="fas fa-book"></i> Danh sách sách (<?php echo $total_books; ?> sách)
             </h1>
             <div class="page-actions">
-                <a href="add-book.php" class="btn btn-success">
+                <a href="add_book.php" class="btn btn-success">
                     <i class="fas fa-plus"></i> Thêm sách mới
                 </a>
                 <div class="search-form">
@@ -63,7 +65,7 @@ ob_start();
                             <i class="fas fa-search"></i> Tìm kiếm
                         </button>
                         <?php if (!empty($search)): ?>
-                            <a href="manage-books.php" class="btn btn-secondary">
+                            <a href="manage_books.php" class="btn btn-secondary">
                                 <i class="fas fa-times"></i> Xóa bộ lọc
                             </a>
                         <?php endif; ?>
