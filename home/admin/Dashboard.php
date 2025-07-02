@@ -24,9 +24,9 @@ $order_check = $conn->query("SHOW TABLES LIKE 'orders'");
 if ($order_check->num_rows > 0) {
     $orders_result = $conn->query("SELECT COUNT(*) as total FROM orders");
     $stats['total_orders'] = $orders_result->fetch_assoc()['total'];
-    
+
     // Tính tổng doanh thu
-    $revenue_result = $conn->query("SELECT SUM(total_amount) as revenue FROM orders WHERE status = 'completed'");
+    $revenue_result = $conn->query("SELECT SUM(total_amount) as revenue FROM orders WHERE order_status = 'completed'");
     $stats['total_revenue'] = $revenue_result->fetch_assoc()['revenue'] ?? 0;
 } else {
     $stats['total_orders'] = 0;
@@ -99,7 +99,7 @@ ob_start();
         <h2 style="margin-bottom: 1rem;">
             <i class="fas fa-user-plus"></i> Người dùng mới
         </h2>
-        
+
         <?php if ($recent_users->num_rows > 0): ?>
             <div class="table-wrapper">
                 <table>
@@ -112,11 +112,11 @@ ob_start();
                     </thead>
                     <tbody>
                         <?php while ($user = $recent_users->fetch_assoc()): ?>
-                        <tr>
-                            <td><?php echo $user['id']; ?></td>
-                            <td><?php echo htmlspecialchars($user['username']); ?></td>
-                            <td><?php echo htmlspecialchars($user['email']); ?></td>
-                        </tr>
+                            <tr>
+                                <td><?php echo $user['id']; ?></td>
+                                <td><?php echo htmlspecialchars($user['username']); ?></td>
+                                <td><?php echo htmlspecialchars($user['email']); ?></td>
+                            </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
@@ -139,7 +139,7 @@ ob_start();
         <h2 style="margin-bottom: 1rem;">
             <i class="fas fa-exclamation-triangle" style="color: #f39c12;"></i> Sách sắp hết
         </h2>
-        
+
         <?php if ($low_stock_books->num_rows > 0): ?>
             <div class="table-wrapper">
                 <table>
@@ -152,21 +152,21 @@ ob_start();
                     </thead>
                     <tbody>
                         <?php while ($book = $low_stock_books->fetch_assoc()): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($book['title']); ?></td>
-                            <td>
-                                <strong style="color: <?php echo $book['stock'] == 0 ? '#e74c3c' : '#f39c12'; ?>;">
-                                    <?php echo $book['stock']; ?>
-                                </strong>
-                            </td>
-                            <td>
-                                <?php if ($book['stock'] == 0): ?>
-                                    <span class="status-badge" style="background: #e74c3c;">Hết hàng</span>
-                                <?php else: ?>
-                                    <span class="status-badge" style="background: #f39c12;">Sắp hết</span>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><?php echo htmlspecialchars($book['title']); ?></td>
+                                <td>
+                                    <strong style="color: <?php echo $book['stock'] == 0 ? '#e74c3c' : '#f39c12'; ?>;">
+                                        <?php echo $book['stock']; ?>
+                                    </strong>
+                                </td>
+                                <td>
+                                    <?php if ($book['stock'] == 0): ?>
+                                        <span class="status-badge" style="background: #e74c3c;">Hết hàng</span>
+                                    <?php else: ?>
+                                        <span class="status-badge" style="background: #f39c12;">Sắp hết</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
@@ -190,4 +190,4 @@ $content = ob_get_clean();
 
 // Include layout template
 include 'layout.php';
-?> 
+?>
