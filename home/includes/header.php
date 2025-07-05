@@ -17,7 +17,6 @@ require_once __DIR__ . '/../config.php';
     <link rel="stylesheet" href="assets/css/scienceBook.css">
     <link rel="stylesheet" href="assets/css/search-autocomplete.css">
     <link rel="stylesheet" href="assets/css/category.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="jquery/jquery-3.7.1.min.js"></script>
     <script src="assets/js/search-autocomplete.js"></script>
 </head>
@@ -46,34 +45,30 @@ require_once __DIR__ . '/../config.php';
             <div>
                 <form class="search-bar" id="searchForm">
                     <input type="search" placeholder="Tìm kiếm sách..." aria-label="Tìm kiếm sách">
-                    <button type="submit"><i class="fas fa-search"></i></button>
+                    <button type="submit"><img src="assets/img/icon/ico_search_white.svg" alt="Cart" style="width: 24px; height: 24px;"></button>
                 </form>
             </div>
             <nav>
                 <ul>
-                    <li><a href="#" class="nav-link"><i class="fa-solid fa-bell"></i>Thông báo</a></li>
+                    <li><a href="#" class="nav-link"><img src="assets/img/icon/ico_noti_gray.svg" alt="Cart" style="width: 24px; height: 24px;"></i>Thông báo</a></li>
                     <li>
                         <a href="index.php?page=cart" class="nav-link">
-                            <i class="fas fa-shopping-cart"></i>Giỏ hàng
-                            <span id="cart-count" class="cart-count">
+                            <img src="assets/img/icon/ico_cart_gray.svg" alt="Cart" style="width: 24px; height: 24px;">Giỏ hàng
+                            
                                 <?php
-                                if (isset($_SESSION['cart'])) {
-                                    $total_items = 0;
-                                    foreach ($_SESSION['cart'] as $item) {
-                                        $total_items += $item['quantity'];
-                                    }
-                                    echo $total_items;
-                                } else {
-                                    echo '0';
+                                if (isset($_GET['page']) && $_GET['page'] == 'cart') {
+                                    $total_quantity = array_sum(array_column($_SESSION['cart'], 'quantity'));
+                                    echo '<span id="cart-count" class="cart-count">'
+                                            .$total_quantity.'
+                                            </span>';
                                 }
                                 ?>
-                            </span>
                         </a>
                     </li>
                     <?php if (isLoggedIn()): ?>
                     <li class="user-account">
                         <a href="#" class="nav-link">
-                            <i class="fas fa-user"></i>
+                            <img src="assets/img/icon/ico_account_gray.svg" style="width: 24px; height: 24px;">
                             <?php echo htmlspecialchars($_SESSION['username']); ?>
                         </a>
                         <div class="account-dropdown">
@@ -89,7 +84,7 @@ require_once __DIR__ . '/../config.php';
                     <?php else: ?>
                         <li class="btnLogin-popup">
                             <a href="#" class="nav-link">
-                                <i class="fas fa-user btnLogin-popup"></i>Tài Khoản
+                                <img src="assets/img/icon/ico_account_gray.svg" style="width: 24px; height: 24px;">Tài Khoản
                             </a>
                         </li>
                     <?php endif; ?>
@@ -144,10 +139,6 @@ require_once __DIR__ . '/../config.php';
                         <input type="password" name="password" required>
                         <label>Mật khẩu</label>
                     </div>
-                    <div class="remember-forgot">
-                        <label><input type="checkbox" required>
-                            Tôi đồng ý với các điều khoản & điều kiện</label>
-                    </div>
                     <button type="submit" class="btnn" name="register">Đăng Ký</button>
                     <div class="login-register">
                         <p>Bạn đã có tài khoản? <a href="#" class="login-link">Đăng nhập</a></p>
@@ -174,20 +165,20 @@ require_once __DIR__ . '/../config.php';
     <?php endif; ?>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
         // Hiển thị notification
-        const notification = document.querySelector('.notification');
-        if (notification) {
-            setTimeout(() => {
-                notification.classList.add('show');
+        var $notification = $('.notification');
+        if ($notification.length) {
+            setTimeout(function() {
+                $notification.addClass('show');
             }, 100);
 
             // Tự động ẩn sau 3 giây
-            setTimeout(() => {
-                notification.classList.remove('show');
+            setTimeout(function() {
+                $notification.removeClass('show');
                 // Xóa notification sau khi animation kết thúc
-                setTimeout(() => {
-                    notification.remove();
+                setTimeout(function() {
+                    $notification.remove();
                 }, 500);
             }, 3000);
         }

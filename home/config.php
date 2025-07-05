@@ -175,7 +175,7 @@ if (isset($_POST['login'])) {
             $_SESSION['notification'] = [
                 'type' => 'success',
                 'message' => 'Đăng nhập thành công! Chào mừng ' . $user['username']
-            ];
+            ]; 
             header("location: index.php");
             exit();
         }
@@ -193,15 +193,9 @@ if (isset($_POST['login'])) {
 // Xử lý đăng xuất
 if (isset($_POST['logout'])) {
     $username = $_SESSION['username'];
-    
-    // Backup cart trước khi logout nếu có
-    $temp_cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
-    
     // Chỉ unset các session của user, giữ lại cart
-    unset($_SESSION['username'], $_SESSION['email'], $_SESSION['user_id']);
+    unset($_SESSION['username'], $_SESSION['email'], $_SESSION['user_id'], $_SESSION['cart'], $_SESSION['admin_logged_in']);
     
-    // Khôi phục cart
-    $_SESSION['cart'] = $temp_cart;
     
     $_SESSION['notification'] = [
         'type' => 'warning',

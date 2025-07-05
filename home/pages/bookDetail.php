@@ -191,124 +191,112 @@ $book = mysqli_fetch_assoc($result);
             Chỉ có thành viên mới có thể viết nhận xét. Vui lòng <a href="#">đăng nhập</a> hoặc <a href="#">đăng ký</a>.
         </div>
     </div>
-
-    <!-- phần javascript-->
     <script>
         function showTab(tab) {
-            document.getElementById('tab-info').style.display = tab === 'info' ? '' : 'none';
-            document.getElementById('tab-desc').style.display = tab === 'desc' ? '' : 'none';
-            var tabs = document.querySelectorAll('.book-tabs .tab');
-            tabs[0].classList.toggle('active', tab === 'info');
-            tabs[1].classList.toggle('active', tab === 'desc');
+            $('#tab-info').css('display', tab === 'info' ? '' : 'none');
+            $('#tab-desc').css('display', tab === 'desc' ? '' : 'none');
+            var $tabs = $('.book-tabs .tab');
+            $tabs.eq(0).toggleClass('active', tab === 'info');
+            $tabs.eq(1).toggleClass('active', tab === 'desc');
         }
 
         function changeQuantity(delta) {
-            var input = document.getElementById('quantity-input');
-            var value = parseInt(input.value) || 1;
+            var $input = $('#quantity-input');
+            var value = parseInt($input.val()) || 1;
             value += delta;
             if (value < 1) value = 1;
-            input.value = value;
+            $input.val(value);
         }
 
         function changeMainImage(src) {
-            document.getElementById('main-img').src = src;
+            $('#main-img').attr('src', src);
         }
 
         function showImageOverlay(src) {
             // Tạo overlay
-            var overlay = document.createElement('div');
-            overlay.className = 'img-overlay';
+            var $overlay = $('<div class="img-overlay"></div>');
 
             // Tạo ảnh lớn
-            var img = document.createElement('img');
-            img.src = src;
-            img.onclick = function (e) { e.stopPropagation(); }; // Ngăn đóng khi click vào ảnh
+            var $img = $('<img>').attr('src', src);
+            $img.on('click', function(e) { e.stopPropagation(); }); // Ngăn đóng khi click vào ảnh
 
             // Hiệu ứng đóng smooth
             function closeOverlay() {
-                overlay.classList.add('closing');
+                $overlay.addClass('closing');
                 setTimeout(function () {
-                    if (overlay && overlay.parentNode) {
-                        document.body.removeChild(overlay);
-                    }
+                    $overlay.remove();
                 }, 300);
             }
 
-            overlay.onclick = closeOverlay;
+            $overlay.on('click', closeOverlay);
 
             // Đóng bằng phím ESC
             function handleKeyPress(e) {
                 if (e.key === 'Escape') {
                     closeOverlay();
-                    document.removeEventListener('keydown', handleKeyPress);
+                    $(document).off('keydown', handleKeyPress);
                 }
             }
-            document.addEventListener('keydown', handleKeyPress);
+            $(document).on('keydown', handleKeyPress);
 
-            overlay.appendChild(img);
-            document.body.appendChild(overlay);
+            $overlay.append($img);
+            $('body').append($overlay);
 
             // Ngăn cuộn trang khi overlay mở
-            document.body.style.overflow = 'hidden';
+            $('body').css('overflow', 'hidden');
 
             // Khôi phục cuộn trang khi đóng
-            overlay.addEventListener('animationend', function (e) {
-                if (e.animationName === 'fadeOut') {
-                    document.body.style.overflow = '';
+            $overlay.on('animationend', function (e) {
+                if (e.originalEvent.animationName === 'fadeOut') {
+                    $('body').css('overflow', '');
                 }
             });
         }
 
         function buyNow(bookId) {
-            // Lấy số lượng từ input
-            const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
+            const quantity = parseInt($('#quantity-input').val()) || 1;
 
-            // Gửi request đến server để thêm vào giỏ hàng
-            fetch('pages/add_to_cart.php', {
+            $.ajax({
+                url: 'pages/add_to_cart.php',
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'book_id=' + bookId + '&quantity=' + quantity
-            })
-                .then(response => response.json())
-                .then(data => {
+                data: { book_id: bookId, quantity: quantity },
+                dataType: 'json',
+                success: function(data) {
                     if (data.success) {
-                        // Sau khi thêm vào giỏ hàng, lưu bookId vào session checkout_items
-                        fetch('pages/prepare_checkout.php', {
+                        $.ajax({
+                            url: 'pages/prepare_checkout.php',
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: 'selected_items=' + JSON.stringify([bookId])
-                        }).then(() => {
-                            window.location.href = 'index.php?page=checkout';
+                            data: { selected_items: JSON.stringify([bookId]) },
+                            success: function() {
+                                location.href = 'index.php?page=cart';
+                            }
                         });
                     } else {
                         alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
                     }
-                });
+                }
+            });
         }
 
         function addToCart(bookId) {
             // Lấy số lượng từ input
-            const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
+            const quantity = parseInt($('#quantity-input').val()) || 1;
 
             // Gửi request đến server
-            fetch('pages/add_to_cart.php', {
+            $.ajax({
+                url: 'pages/add_to_cart.php',
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'book_id=' + bookId + '&quantity=' + quantity
-            })
-                .then(response => response.json())
-                .then(data => {
+                data: { book_id: bookId, quantity: quantity },
+                dataType: 'json',
+                success: function(data) {
                     console.log('Server response:', data);
                     if (data.success) {
                         alert('Đã thêm sách vào giỏ hàng thành công!');
                     } else {
                         alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
                     }
-                });
+                }
+            });
         }
     </script>
 

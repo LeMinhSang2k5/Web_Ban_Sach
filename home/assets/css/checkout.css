@@ -5,22 +5,25 @@
 }
 
 .checkout-header {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #eee;
+    padding: 10px;
+    margin: 40px 0px 20px 0px;
+    border-radius: 10px 10px 0 0;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .checkout-header h1 {
-    color: #333;
+    color: #d70018;
     font-size: 24px;
     margin: 0;
 }
 
 .back-to-cart {
-    color: #007bff;
+    color: #d70018;
     text-decoration: none;
     font-weight: 500;
 }
@@ -274,6 +277,40 @@
 
 .order-terms a:hover {
     text-decoration: underline;
+}
+
+.order-history-table {
+    width: 100%;
+    background: #fff;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 24px 16px;
+    margin: 0 auto 32px auto;
+    border-radius: 0 0 10px 10px;
+}
+
+.order-history-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-history-table th,
+.order-history-table td {
+    padding: 10px 8px;
+    border: 1px solid #f0f0f0;
+    text-align: center;
+}
+
+.order-history-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+    .order-history-table {
+        padding: 12px 4px;
+    }
 }
 
 @media (max-width: 768px) {

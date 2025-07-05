@@ -123,179 +123,180 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 <link rel="stylesheet" href="assets/css/checkout.css">
 
 <div class="checkout-container">
-    <div class="checkout-header">
-        <h1><i class="fas fa-shopping-cart"></i> THANH TOÁN</h1>
-        <a href="index.php?page=cart" class="back-to-cart">← Quay lại giỏ hàng</a>
-    </div>
+    <div class="content-checkout">
+        <div class="checkout-header">
+            <h1>THANH TOÁN</h1>
+            <a href="index.php?page=cart" class="back-to-cart">← Quay lại giỏ hàng</a>
+        </div>
 
-    <?php if (!empty($errors)): ?>
+        <?php if (!empty($errors)): ?>
         <div class="error-messages">
             <?php foreach ($errors as $error): ?>
                 <p class="error"><?php echo htmlspecialchars($error); ?></p>
             <?php endforeach; ?>
         </div>
-    <?php endif; ?>
+        <?php endif; ?>
 
-    <?php if (empty($cart_items)): ?>
-        <div class="empty-cart-checkout">
-            <i class="fas fa-shopping-cart fa-3x"></i>
-            <p>Giỏ hàng của bạn đang trống</p>
-            <a href="index.php" class="continue-shopping">Tiếp tục mua sắm</a>
-        </div>
-    <?php else: ?>
-
-        <form method="POST" class="checkout-form">
-            <div class="checkout-content">
-                <div class="checkout-left">
-                    <div class="customer-info">
-                        <h2>Thông tin khách hàng</h2>
-
-                        <?php if (isLoggedIn()): ?>
-                            <div class="logged-in-info">
-                                <p><strong>Đang đặt hàng với tài khoản:</strong>
-                                    <?php echo htmlspecialchars($_SESSION['username']); ?></p>
-                                <p><strong>Email:</strong> <?php echo htmlspecialchars($_SESSION['email']); ?></p>
-                            </div>
-                        <?php endif; ?>
-
-                        <div class="form-group">
-                            <label for="customer_name">Họ và tên *</label>
-                            <input type="text" id="customer_name" name="customer_name"
-                                value="<?php echo isLoggedIn() ? htmlspecialchars($_SESSION['username']) : ''; ?>" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="customer_email">Email *</label>
-                            <input type="email" id="customer_email" name="customer_email"
-                                value="<?php echo isLoggedIn() ? htmlspecialchars($_SESSION['email']) : ''; ?>" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="customer_phone">Số điện thoại *</label>
-                            <input type="tel" id="customer_phone" name="customer_phone" required>
-                        </div>
-                    </div>
-
-                    <div class="shipping-info">
-                        <h2>Thông tin giao hàng</h2>
-
-                        <div class="form-group">
-                            <label for="shipping_address">Địa chỉ giao hàng *</label>
-                            <textarea id="shipping_address" name="shipping_address" rows="3" required></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="notes">Ghi chú đơn hàng</label>
-                            <textarea id="notes" name="notes" rows="2"
-                                placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="payment-info">
-                        <h2>Phương thức thanh toán</h2>
-                        <div class="payment-methods">
-                            <label class="payment-method">
-                                <input type="radio" name="payment_method" value="cod" checked>
-                                <span class="method-name">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    Thanh toán khi nhận hàng (COD)
-                                </span>
-                            </label>
-                            <label class="payment-method">
-                                <input type="radio" name="payment_method" value="bank_transfer">
-                                <span class="method-name">
-                                    <i class="fas fa-university"></i>
-                                    Chuyển khoản ngân hàng
-                                </span>
-                            </label>
-                            <label class="payment-method">
-                                <input type="radio" name="payment_method" value="momo">
-                                <span class="method-name">
-                                    <i class="fas fa-mobile-alt"></i>
-                                    Ví điện tử MoMo
-                                </span>
-                            </label>
-                        </div>
-                        <div id="bank-info" style="display:none; margin-top:10px;">
-                            <div style="display: flex; align-items: center; gap: 32px;">
-                                <div style="min-width:220px;">
-                                    <strong>Thông tin chuyển khoản:</strong><br>
-                                    Ngân hàng: ACB<br>
-                                    Số tài khoản: 33939597<br>
-                                    Chủ tài khoản: Lê Minh Sang<br>
-                                    Nội dung: [Mã đơn hàng]<br>
-                                </div>
-                                <div style="margin-top:0;">
-                                    <img id="bank-qr" src="https://img.vietqr.io/image/ACB-33939597-compact2.png?amount=<?php echo $total; ?>&addInfo=Thanh%20toan%20don%20hang" alt="QR chuyển khoản" style="max-width:200px;display:block;">
-                                    <div style="font-size:12px; color:#888; text-align:center;">Quét mã QR để chuyển khoản nhanh</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="momo-info" style="display:none; margin-top:10px;">
-                            <div style="display: flex; align-items: center; gap: 32px;">
-                                <div style="min-width:220px;">
-                                    <strong>Ví MoMo:</strong><br>
-                                    Số điện thoại: 0901234567<br>
-                                    Chủ ví: Nguyễn Văn A<br>
-                                    Nội dung: [Mã đơn hàng]<br>
-                                </div>
-                                <div style="margin-top:0;">
-                                    <img id="momo-qr" src="https://img.vietqr.io/image/MB-0901234567-compact2.png?amount=<?php echo $total; ?>&addInfo=Thanh%20toan%20don%20hang" alt="QR MoMo" style="max-width:200px;display:block;">
-                                    <div style="font-size:12px; color:#888; text-align:center;">Quét mã QR để thanh toán MoMo</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="checkout-right">
-                    <div class="order-summary">
-                        <h2>Tóm tắt đơn hàng</h2>
-                        <div class="order-items">
-                            <?php foreach ($cart_items as $item): ?>
-                                <div class="order-item">
-                                    <img src="<?php echo htmlspecialchars($item['image']); ?>"
-                                        alt="<?php echo htmlspecialchars($item['title']); ?>" class="item-image">
-                                    <div class="item-details">
-                                        <h4><?php echo htmlspecialchars($item['title']); ?></h4>
-                                        <p class="item-meta">
-                                            Tác giả: <?php echo htmlspecialchars($item['author'] ?? 'Không có'); ?><br>
-                                            NXB: <?php echo htmlspecialchars($item['publisher'] ?? 'Không có'); ?>
-                                        </p>
-                                    </div>
-                                    <div class="item-subtotal">
-                                        <?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?>đ
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="order-total">
-                            <div class="total-row">
-                                <span>Tạm tính:</span>
-                                <span id="subtotal"><?php echo number_format($total, 0, ',', '.'); ?>đ</span>
-                            </div>
-                            <div class="total-row">
-                                <span>Phí vận chuyển:</span>
-                                <span>Miễn phí</span>
-                            </div>
-                            <div class="total-row final-total">
-                                <span>Tổng cộng:</span>
-                                <span id="total"><?php echo number_format($total, 0, ',', '.'); ?>đ</span>
-                            </div>
-                        </div>
-                        <button type="submit" name="place_order" class="place-order-btn">
-                            <i class="fas fa-check"></i> ĐẶT HÀNG
-                        </button>
-                        <div class="order-terms">
-                            <p><small>Bằng việc đặt hàng, bạn đồng ý với <a href="#">Điều khoản sử dụng</a> của chúng
-                                    tôi.</small></p>
-                        </div>
-                    </div>
-                </div>
+        <?php if (empty($cart_items)): ?>
+            <div class="empty-cart-checkout">
+                <i class="fas fa-shopping-cart fa-3x"></i>
+                <p>Giỏ hàng của bạn đang trống</p>
+                <a href="index.php" class="continue-shopping">Tiếp tục mua sắm</a>
             </div>
-        </form>
+        <?php else: ?>
 
-    <?php endif; ?>
+            <form method="POST" class="checkout-form">
+                <div class="checkout-content">
+                    <div class="checkout-left">
+                        <div class="customer-info">
+                            <h2>Thông tin khách hàng</h2>
+                            <?php if (isLoggedIn()): ?>
+                                <div class="logged-in-info">
+                                    <p><strong>Đang đặt hàng với tài khoản:</strong>
+                                        <?php echo htmlspecialchars($_SESSION['username']); ?></p>
+                                    <p><strong>Email:</strong> <?php echo htmlspecialchars($_SESSION['email']); ?></p>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="form-group">
+                                <label for="customer_name">Họ và tên *</label>
+                                <input type="text" id="customer_name" name="customer_name"
+                                    value="<?php echo isLoggedIn() ? htmlspecialchars($_SESSION['username']) : ''; ?>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer_email">Email *</label>
+                                <input type="email" id="customer_email" name="customer_email"
+                                    value="<?php echo isLoggedIn() ? htmlspecialchars($_SESSION['email']) : ''; ?>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer_phone">Số điện thoại *</label>
+                                <input type="tel" id="customer_phone" name="customer_phone" required>
+                            </div>
+                        </div>
+
+                        <div class="shipping-info">
+                            <h2>Thông tin giao hàng</h2>
+
+                            <div class="form-group">
+                                <label for="shipping_address">Địa chỉ giao hàng *</label>
+                                <textarea id="shipping_address" name="shipping_address" rows="3" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notes">Ghi chú đơn hàng</label>
+                                <textarea id="notes" name="notes" rows="2"
+                                    placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="payment-info">
+                            <h2>Phương thức thanh toán</h2>
+                            <div class="payment-methods">
+                                <label class="payment-method">
+                                    <input type="radio" name="payment_method" value="cod" checked>
+                                    <span class="method-name">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        Thanh toán khi nhận hàng (COD)
+                                    </span>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment_method" value="bank_transfer">
+                                    <span class="method-name">
+                                        <i class="fas fa-university"></i>
+                                        Chuyển khoản ngân hàng
+                                    </span>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment_method" value="momo">
+                                    <span class="method-name">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        Ví điện tử MoMo
+                                    </span>
+                                </label>
+                            </div>
+                            <div id="bank-info" style="display:none; margin-top:10px;">
+                                <div style="display: flex; align-items: center; gap: 32px;">
+                                    <div style="min-width:220px;">
+                                        <strong>Thông tin chuyển khoản:</strong><br>
+                                        Ngân hàng: ACB<br>
+                                        Số tài khoản: 33939597<br>
+                                        Chủ tài khoản: Lê Minh Sang<br>
+                                        Nội dung: [Mã đơn hàng]<br>
+                                    </div>
+                                    <div style="margin-top:0;">
+                                        <img id="bank-qr" src="https://img.vietqr.io/image/ACB-33939597-compact2.png?amount=<?php echo $total; ?>&addInfo=Thanh%20toan%20don%20hang" alt="QR chuyển khoản" style="max-width:200px;display:block;">
+                                        <div style="font-size:12px; color:#888; text-align:center;">Quét mã QR để chuyển khoản nhanh</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="momo-info" style="display:none; margin-top:10px;">
+                                <div style="display: flex; align-items: center; gap: 32px;">
+                                    <div style="min-width:220px;">
+                                        <strong>Ví MoMo:</strong><br>
+                                        Số điện thoại: 0901234567<br>
+                                        Chủ ví: Nguyễn Văn A<br>
+                                        Nội dung: [Mã đơn hàng]<br>
+                                    </div>
+                                    <div style="margin-top:0;">
+                                        <img id="momo-qr" src="https://img.vietqr.io/image/MB-0901234567-compact2.png?amount=<?php echo $total; ?>&addInfo=Thanh%20toan%20don%20hang" alt="QR MoMo" style="max-width:200px;display:block;">
+                                        <div style="font-size:12px; color:#888; text-align:center;">Quét mã QR để thanh toán MoMo</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkout-right">
+                        <div class="order-summary">
+                            <h2>Tóm tắt đơn hàng</h2>
+                            <div class="order-items">
+                                <?php foreach ($cart_items as $item): ?>
+                                    <div class="order-item">
+                                        <img src="<?php echo htmlspecialchars($item['image']); ?>"
+                                            alt="<?php echo htmlspecialchars($item['title']); ?>" class="item-image">
+                                        <div class="item-details">
+                                            <h4><?php echo htmlspecialchars($item['title']); ?></h4>
+                                            <p class="item-meta">
+                                                Tác giả: <?php echo htmlspecialchars($item['author'] ?? 'Không có'); ?><br>
+                                                NXB: <?php echo htmlspecialchars($item['publisher'] ?? 'Không có'); ?>
+                                            </p>
+                                        </div>
+                                        <div class="item-subtotal">
+                                            <?php echo number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?>đ
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <div class="order-total">
+                                <div class="total-row">
+                                    <span>Tạm tính:</span>
+                                    <span id="subtotal"><?php echo number_format($total, 0, ',', '.'); ?>đ</span>
+                                </div>
+                                <div class="total-row">
+                                    <span>Phí vận chuyển:</span>
+                                    <span>Miễn phí</span>
+                                </div>
+                                <div class="total-row final-total">
+                                    <span>Tổng cộng:</span>
+                                    <span id="total"><?php echo number_format($total, 0, ',', '.'); ?>đ</span>
+                                </div>
+                            </div>
+                            <button type="submit" name="place_order" class="place-order-btn">
+                                <i class="fas fa-check"></i> ĐẶT HÀNG
+                            </button>
+                            <div class="order-terms">
+                                <p><small>Bằng việc đặt hàng, bạn đồng ý với <a href="#">Điều khoản sử dụng</a> của chúng
+                                        tôi.</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        <?php endif; ?>
+    </div>
 </div>
 
 <script>

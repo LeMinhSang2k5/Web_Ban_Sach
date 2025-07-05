@@ -42,7 +42,14 @@ function renderBookCard($book)
     }
     $html .= '    <img src="' . $book['image'] . '" alt="' . $book['title'] . '" class="product-image">';
     $html .= '  </div>';
-    $html .= '  <h3 class="product-title">' . $book['title'] . '</h3>';
+
+    if (mb_strlen($book['title'], 'UTF-8') > 40) {
+        $short_title = mb_substr($book['title'], 0, 40, 'UTF-8') . '...';
+    } else {
+        $short_title = $book['title'];
+    }
+    $html .= '  <h3 class="product-title">' . $short_title . '</h3>';
+
     $html .= '  <div class="product-price-row">';
     $html .= '    <span class="product-price">' . number_format($book['price'], 0, ",", ".") . ' đ</span>';
     if (!empty($book['discount'])) {

@@ -53,9 +53,9 @@ if (isset($_SESSION['user_id'])) {
 
 <link rel="stylesheet" href="assets/css/cart.css">
 
-<div class="cart-container">
+<div class="cart-container ">
     <div class="cart-title">
-        <i class="fas fa-shopping-cart"></i> GIỎ HÀNG CỦA BẠN (<?php echo count($cart_items); ?> sản phẩm)
+        GIỎ HÀNG CỦA BẠN (<?php echo count($cart_items); ?> sản phẩm)
     </div>
 
     <?php if (!isLoggedIn()): ?>

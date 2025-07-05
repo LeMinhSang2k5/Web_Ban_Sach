@@ -5,29 +5,34 @@
 }
 
 .cart-title {
+    width: 100%;
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color: #d70018;
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 15px;
+        background: #fff;
+    border-radius: 10px 10px 0 0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .cart-title i {
-    color: #007bff;
+    color: #d70018;
 }
 
 .login-notice {
-    background-color: #f8f9fa;
+    background-color: #fff;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 0 0 10px 10px;
     margin-bottom: 20px;
     text-align: center;
 }
 
 .login-notice a {
-    color: #007bff;
+    color: #d70018;
     text-decoration: none;
     font-weight: bold;
 }
