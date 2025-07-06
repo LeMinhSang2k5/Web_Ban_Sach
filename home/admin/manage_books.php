@@ -38,11 +38,15 @@ if (isset($_POST['edit_book'])) {
 
 // Lấy danh sách sách
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$current_page = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+// Đảm bảo limit hợp lệ
+if (!in_array($limit, [5, 10, 15, 20])) {
+    $limit = 10;
+}
 // Ensure page is always at least 1
-$page = max(1, $page);
-$limit = 10;
-$offset = ($page - 1) * $limit;
+$current_page = max(1, $current_page);
+$offset = ($current_page - 1) * $limit;
 
 $where_clause = "";
 if (!empty($search)) {
@@ -88,21 +92,28 @@ ob_start();
                 <i class="fas fa-book"></i> Danh sách sách (<?php echo $total_books; ?> sách)
             </h1>
             <div class="page-actions">
-                <a href="add_book.php" class="btn btn-success">
+                <a href="?page=add_book" class="btn btn-success">
                     <i class="fas fa-plus"></i> Thêm sách mới
                 </a>
                 <div class="search-form">
-                    <form method="GET" style="display: flex; gap: 1rem;">
-                        <input type="text" name="search" placeholder="Tìm kiếm sách..." 
-                               value="<?php echo htmlspecialchars($search); ?>">
-                        <button type="submit" class="btn btn-primary">
+                    <form method="GET" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                        <input type="hidden" name="page" value="manage_books">
+                        <div style="display: flex; gap: 1rem; align-items: center; flex: 1; min-width: 300px;">
+                            <input type="text" name="search" placeholder="Tìm kiếm sách..." 
+                                   value="<?php echo htmlspecialchars($search); ?>" style="flex: 1; min-width: 200px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;">
+                                <label for="limit" style="font-weight: 500;">Hiển thị:</label>
+                                <select name="limit" id="limit" style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; min-width: 60px;">
+                                    <option value="5" <?php echo ($limit == 5) ? 'selected' : ''; ?>>5</option>
+                                    <option value="10" <?php echo ($limit == 10) ? 'selected' : ''; ?>>10</option>
+                                    <option value="15" <?php echo ($limit == 15) ? 'selected' : ''; ?>>15</option>
+                                    <option value="20" <?php echo ($limit == 20) ? 'selected' : ''; ?>>20</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="white-space: nowrap;">
                             <i class="fas fa-search"></i> Tìm kiếm
                         </button>
-                        <?php if (!empty($search)): ?>
-                            <a href="manage_books.php" class="btn btn-secondary">
-                                <i class="fas fa-times"></i> Xóa bộ lọc
-                            </a>
-                        <?php endif; ?>
                     </form>
                 </div>
             </div>
@@ -184,21 +195,26 @@ ob_start();
         <!-- Phân trang -->
         <?php if ($total_pages > 1): ?>
             <div class="pagination">
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>&search=<?php echo urlencode($search); ?>">← Trước</a>
-                <?php endif; ?>
-
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <?php if ($i == $page): ?>
-                        <span class="current"><?php echo $i; ?></span>
-                    <?php else: ?>
-                        <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>"><?php echo $i; ?></a>
+                <div class="pagination-info">
+                    Hiển thị <?php echo (($current_page - 1) * $limit + 1); ?> - <?php echo min($current_page * $limit, $total_books); ?> trong tổng <?php echo $total_books; ?> sách
+                </div>
+                <div class="pagination-links">
+                    <?php if ($current_page > 1): ?>
+                        <a href="?page=manage_books&p=<?php echo $current_page - 1; ?>&search=<?php echo urlencode($search); ?>&limit=<?php echo $limit; ?>">← Trước</a>
                     <?php endif; ?>
-                <?php endfor; ?>
 
-                <?php if ($page < $total_pages): ?>
-                    <a href="?page=<?php echo $page + 1; ?>&search=<?php echo urlencode($search); ?>">Sau →</a>
-                <?php endif; ?>
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <?php if ($i == $current_page): ?>
+                            <span class="current"><?php echo $i; ?></span>
+                        <?php else: ?>
+                            <a href="?page=manage_books&p=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>&limit=<?php echo $limit; ?>"><?php echo $i; ?></a>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+
+                    <?php if ($current_page < $total_pages): ?>
+                        <a href="?page=manage_books&p=<?php echo $current_page + 1; ?>&search=<?php echo urlencode($search); ?>&limit=<?php echo $limit; ?>">Sau →</a>
+                    <?php endif; ?>
+                </div>
             </div>
         <?php endif; ?>
 
@@ -258,6 +274,25 @@ ob_start();
                 </form>
             </div>
         </div>
+
+        <style>
+        .pagination {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .pagination-info {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .pagination-links {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        </style>
 
         <!-- jQuery Modal Script -->
         <script src="../jquery/jquery-3.7.1.min.js"></script>
