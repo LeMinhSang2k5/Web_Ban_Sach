@@ -79,6 +79,8 @@ if (isset($_POST['delete_user'])) {
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $role_filter = isset($_GET['role']) ? $_GET['role'] : '';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+// Đảm bảo page luôn >= 1
+if ($page < 1) $page = 1;
 $limit = 15;
 $offset = ($page - 1) * $limit;
 

@@ -1,12 +1,7 @@
 <?php
-session_start();
+// orders.php - Quản lý đơn hàng (được include từ index.php)
+$page_title = "Quản lý đơn hàng";
 require_once('../db.php');
-
-// Kiểm tra đăng nhập admin
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header("Location: index.php");
-    exit();
-}
 
 // Xử lý cập nhật trạng thái đơn hàng
 if (isset($_POST['update_status']) && isset($_POST['order_id']) && isset($_POST['status'])) {
@@ -31,7 +26,7 @@ if (isset($_GET['delete_id'])) {
     } else {
         $error_message = "Có lỗi xảy ra khi xóa đơn hàng!";
     }
-    header("Location: orders.php");
+    header("Location: index.php?page=manage_orders");
     exit();
 }
 
@@ -124,7 +119,7 @@ ob_start();
                                     <a href="view_order.php?id=<?php echo urlencode($row['order_code']); ?>" class="btn btn-warning btn-sm">
                                         <i class="fas fa-eye"></i> Xem
                                     </a>
-                                    <a href="orders.php?delete_id=<?php echo urlencode($row['order_code']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?');">
+                                    <a href="index.php?page=manage_orders&delete_id=<?php echo urlencode($row['order_code']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?');">
                                         <i class="fas fa-trash"></i> Xóa
                                     </a>
                                 </div>

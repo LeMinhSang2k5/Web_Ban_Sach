@@ -1,4 +1,5 @@
 <?php
+// reports.php - Báo cáo đơn hàng (được include từ index.php)
 // Set page title for layout
 $page_title = "Báo cáo đơn hàng";
 
@@ -99,6 +100,7 @@ ob_start();
 <!-- Bộ lọc trạng thái -->
 <div style="margin: 2rem 0 1rem 0;">
     <form method="GET" style="display: flex; gap: 1rem; align-items: center;">
+        <input type="hidden" name="page" value="reports">
         <label for="status"><b>Lọc theo trạng thái:</b></label>
         <select name="status" id="status" onchange="this.form.submit()" style="padding: 0.5rem 1rem; border-radius: 5px; border: 1px solid #ccc;">
             <option value="">Tất cả</option>

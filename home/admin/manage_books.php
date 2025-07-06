@@ -60,13 +60,13 @@ $total_pages = ceil($total_books / $limit);
 
 // Lấy tất cả danh mục
 $parents = $conn->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORDER BY name ASC");
-$parents = [];
+$parent_categories = [];
 while ($row = $parents->fetch_assoc()) {
-    $parents[] = $row['name'];
+    $parent_categories[] = $row['name'];
 }
 
 // Lấy tất cả danh mục con (nếu muốn dùng chung dropdown)
-$subcategory_result = $conn->query("SELECT DISTINCT subcategory FROM categories WHERE subcategory != '' ORDER BY subcategory ASC");
+$subcategory_result = $conn->query("SELECT DISTINCT subcategory FROM books WHERE subcategory != '' ORDER BY subcategory ASC");
 $subcategories = [];
 while ($row = $subcategory_result->fetch_assoc()) {
     $subcategories[] = $row['subcategory'];
@@ -235,7 +235,7 @@ ob_start();
                         <label for="edit_category">Danh mục</label>
                         <select name="edit_category" id="edit_category" required>
                             <option value="">-- Chọn danh mục --</option>
-                            <?php foreach ($parents as $parent): ?>
+                            <?php foreach ($parent_categories as $parent): ?>
                                 <option value="<?php echo htmlspecialchars($parent); ?>"><?php echo htmlspecialchars($parent); ?></option>
                             <?php endforeach; ?>
                         </select>

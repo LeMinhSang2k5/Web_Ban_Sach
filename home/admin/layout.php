@@ -58,7 +58,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
                 <a href="index.php?page=manage_user" class="action-btn <?php echo $current_page == 'manage_user' ? 'active' : ''; ?>">
                     <i class="fas fa-users"></i> Quản lý người dùng
                 </a>
-                <a href="index.php?page=orders" class="action-btn <?php echo $current_page == 'orders' ? 'active' : ''; ?>">
+                <a href="index.php?page=manage_orders" class="action-btn <?php echo $current_page == 'orders' ? 'active' : ''; ?>">
                     <i class="fas fa-shopping-cart"></i> Quản lý đơn hàng
                 </a>
                 <a href="index.php?page=manage_categories" class="action-btn <?php echo $current_page == 'manage_categories' ? 'active' : ''; ?>">

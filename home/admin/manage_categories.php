@@ -5,6 +5,28 @@ require_once('../db.php');
 
 $parents = $conn->query("SELECT id, name FROM categories WHERE parent_id IS NULL ORDER BY name ASC");
 
+// Xây dựng mảng category_map để hiển thị
+$category_map = [];
+$total_categories = 0;
+$total_subcategories = 0;
+
+if ($parents && $parents->num_rows > 0) {
+    while ($parent = $parents->fetch_assoc()) {
+        $category_name = $parent['name'];
+        $category_map[$category_name] = [];
+        $total_categories++;
+        
+        // Lấy danh mục con
+        $subcats = $conn->query("SELECT subcategory FROM categories WHERE category = '$category_name' AND subcategory != '' GROUP BY subcategory");
+        if ($subcats && $subcats->num_rows > 0) {
+            while ($subcat = $subcats->fetch_assoc()) {
+                $category_map[$category_name][] = $subcat['subcategory'];
+                $total_subcategories++;
+            }
+        }
+    }
+}
+
 ob_start();
 ?>
 
@@ -12,11 +34,11 @@ ob_start();
 <div class="stats-grid" style="margin-bottom: 2rem;">
     <div class="stat-card">
         <h3>Tổng danh mục</h3>
-        <div class="stat-number"><?php echo count($category_map); ?></div>
+        <div class="stat-number"><?php echo $total_categories; ?></div>
     </div>
     <div class="stat-card">
         <h3>Danh mục con</h3>
-        <div class="stat-number"><?php echo count($category_map); ?></div>
+        <div class="stat-number"><?php echo $total_subcategories; ?></div>
     </div>
 </div>
 

@@ -27,6 +27,12 @@ switch($page) {
     case 'manage_categories':
         include 'manage_categories.php';
         break;
+    case 'manage_orders':
+        include 'orders.php';
+        break;
+    case 'reports':
+        include 'reports.php';
+        break;
     default:
         // Nếu không tìm thấy page, redirect về dashboard
         header("Location: index.php?page=dashboard");
