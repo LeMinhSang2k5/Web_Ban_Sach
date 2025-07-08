@@ -116,9 +116,9 @@ ob_start();
                             </td>
                             <td>
                                 <div class="order-actions">
-                                    <a href="view_order.php?id=<?php echo urlencode($row['order_code']); ?>" class="btn btn-warning btn-sm">
+                                    <button type="button" class="btn btn-info btn-sm" onclick="viewOrderDetails('<?php echo htmlspecialchars($row['order_code']); ?>', '<?php echo htmlspecialchars($row['username']); ?>', '<?php echo htmlspecialchars($row['email']); ?>', '<?php echo htmlspecialchars($row['created_at']); ?>', '<?php echo number_format($row['total_amount'], 0, ',', '.'); ?>', '<?php echo htmlspecialchars($row['order_status']); ?>')">
                                         <i class="fas fa-eye"></i> Xem
-                                    </a>
+                                    </button>
                                     <a href="index.php?page=manage_orders&delete_id=<?php echo urlencode($row['order_code']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?');">
                                         <i class="fas fa-trash"></i> Xóa
                                     </a>
@@ -282,7 +282,162 @@ ob_start();
         color: #888;
         margin: 2rem 0;
     }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 600px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .order-details {
+        margin-top: 20px;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .detail-value {
+        color: #666;
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        color: #fff;
+    }
+
+    .btn-info:hover {
+        background: linear-gradient(135deg, #138496 0%, #17a2b8 100%);
+    }
 </style>
+
+<!-- Modal for Order Details -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2><i class="fas fa-shopping-cart"></i> Chi tiết đơn hàng</h2>
+        <div class="order-details" id="orderDetails">
+            <!-- Order details will be populated here -->
+        </div>
+    </div>
+</div>
+
+<script>
+function viewOrderDetails(orderCode, username, email, createdAt, totalAmount, status) {
+    const modal = document.getElementById('orderModal');
+    const detailsDiv = document.getElementById('orderDetails');
+    
+    // Get status text
+    let statusText = '';
+    switch(status) {
+        case 'pending':
+            statusText = 'Chờ xử lý';
+            break;
+        case 'processing':
+            statusText = 'Đang xử lý';
+            break;
+        case 'completed':
+            statusText = 'Hoàn thành';
+            break;
+        case 'cancelled':
+            statusText = 'Đã hủy';
+            break;
+        default:
+            statusText = status;
+    }
+    
+    // Populate modal content
+    detailsDiv.innerHTML = `
+        <div class="detail-row">
+            <span class="detail-label">Mã đơn hàng:</span>
+            <span class="detail-value">${orderCode}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Khách hàng:</span>
+            <span class="detail-value">${username}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">${email}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Ngày đặt hàng:</span>
+            <span class="detail-value">${createdAt}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Tổng tiền:</span>
+            <span class="detail-value">${totalAmount} đ</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Trạng thái:</span>
+            <span class="detail-value">
+                <span class="status-badge status-${status}">${statusText}</span>
+            </span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Ghi chú:</span>
+            <span class="detail-value">Chi tiết sản phẩm sẽ được hiển thị khi có dữ liệu</span>
+        </div>
+    `;
+    
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById('orderModal').style.display = "none";
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById('orderModal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
 
 <?php
 $content = ob_get_clean();
